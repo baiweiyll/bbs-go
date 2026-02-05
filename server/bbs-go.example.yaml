@@ -19,6 +19,15 @@ DB:
   MaxIdleConns: 50
   MaxOpenConns: 200
 
+# OIDC配置
+oidc:
+  issuer:
+  clientId:
+  secretKey:
+  redirect:
+  callback:
+  console:
+
 # 上传配置
 Uploader:
   # 启用上传方式
