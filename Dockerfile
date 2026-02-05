@@ -1,6 +1,6 @@
 # server builder
 
-FROM golang:1.24 AS server_builder
+FROM hub-xc.changhong.com/library/golangci-lint:1.64.8-go1.24.6 AS server_builder
 
 ENV APP_HOME=/code/bbs-go/server
 WORKDIR "$APP_HOME"
@@ -14,7 +14,7 @@ RUN CGO_ENABLED=0 go build -v -o bbs-go main.go && chmod +x bbs-go
 
 
 # site builder
-FROM node:20-alpine AS site_builder
+FROM image.changhong.com/library/node:20-arm AS site_builder
 
 ENV APP_HOME=/code/bbs-go/site
 WORKDIR "$APP_HOME"
@@ -30,7 +30,7 @@ ENV http_proxy= https_proxy=
 
 
 # admin builder
-FROM node:20-alpine AS admin_builder
+FROM image.changhong.com/library/node:20-arm AS admin_builder
 
 ENV APP_HOME=/code/bbs-go/admin
 WORKDIR "$APP_HOME"
@@ -45,7 +45,7 @@ RUN pnpm build
 ENV http_proxy= https_proxy=
 
 # run
-FROM node:20-alpine
+FROM image.changhong.com/library/node:20-arm
 
 ENV APP_HOME=/app/bbs-go
 WORKDIR "$APP_HOME"
