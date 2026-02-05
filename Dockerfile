@@ -6,10 +6,10 @@ ENV APP_HOME=/code/bbs-go/server
 WORKDIR "$APP_HOME"
 
 COPY ./server ./
-ENV http_proxy=http://10.4.212.21:8123 https_proxy=http://10.4.212.21:8123
+#ENV http_proxy=http://10.4.212.21:8123 https_proxy=http://10.4.212.21:8123
 RUN go env -w GOPROXY=https://goproxy.cn,direct
 RUN go mod download
-ENV http_proxy= https_proxy=
+#ENV http_proxy= https_proxy=
 RUN CGO_ENABLED=0 go build -v -o bbs-go main.go && chmod +x bbs-go
 
 
