@@ -2,10 +2,12 @@ package api
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/json"
+	"fmt"
+	"net/http"
 	"time"
 
-	"bbs-go/internal/controllers/render"
 	"bbs-go/internal/models"
 	"bbs-go/internal/models/constants"
 	"bbs-go/internal/pkg/config"
@@ -14,6 +16,7 @@ import (
 	"github.com/coreos/go-oidc"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/context"
 	"github.com/mlogclub/simple/common/strs"
 	"github.com/mlogclub/simple/sqls"
 	"github.com/mlogclub/simple/web"
@@ -83,11 +86,13 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 	conf := config.Instance.OIDC
 	incomingState := c.Ctx.URLParam("state")
 	if incomingState == "" {
-		return web.JsonErrorMsg("OIDC state not found")
+		c.redirectWithError(conf.Console, c.Ctx, fmt.Errorf("OIDC state not found"))
+		return nil
 	}
 	stateToken := c.Ctx.GetCookie("oidc_state_token")
 	if stateToken == "" {
-		return web.JsonErrorMsg("OIDC state token not found")
+		c.redirectWithError(conf.Console, c.Ctx, fmt.Errorf("OIDC state token not found"))
+		return nil
 	}
 	// 验证 State Token
 	token, err := jwt.Parse(stateToken, func(token *jwt.Token) (interface{}, error) {
@@ -97,20 +102,24 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 		return []byte(conf.SecretKey), nil
 	})
 	if err != nil || !token.Valid {
-		return web.JsonErrorMsg("Invalid OIDC state token")
+		c.redirectWithError(conf.Console, c.Ctx, fmt.Errorf("invalid OIDC state token"))
+		return nil
 	}
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok {
-		return web.JsonErrorMsg("Invalid OIDC state token claims")
+		c.redirectWithError(conf.Console, c.Ctx, fmt.Errorf("invalid OIDC state token claims"))
+		return nil
 	}
 	expectedState := claims["state"].(string)
 	if expectedState != incomingState {
-		return web.JsonErrorMsg("OIDC state mismatch")
+		c.redirectWithError(conf.Console, c.Ctx, fmt.Errorf("OIDC state mismatch"))
+		return nil
 	}
 	ctx := c.Ctx.Request().Context()
 	provider, err := oidc.NewProvider(ctx, conf.Issuer)
 	if err != nil {
-		return web.JsonError(err)
+		c.redirectWithError(conf.Console, c.Ctx, err)
+		return nil
 	}
 	oauth2Config := oauth2.Config{
 		ClientID:     conf.ClientID,
@@ -130,24 +139,29 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 	// 使用 Code 换取 Token
 	oauth2Token, err := oauth2Config.Exchange(ctx, c.Ctx.URLParam("code"))
 	if err != nil {
-		return web.JsonError(err)
+		c.redirectWithError(conf.Console, c.Ctx, err)
+		return nil
 	}
 	rawIDToken, ok := oauth2Token.Extra("id_token").(string)
 	if !ok {
-		return web.JsonErrorMsg("No id_token field in oauth2 token.")
+		c.redirectWithError(conf.Console, c.Ctx, fmt.Errorf("no id_token field in oauth2 token"))
+		return nil
 	}
 	verifier := provider.Verifier(&oidc.Config{ClientID: conf.ClientID})
 	idToken, err := verifier.Verify(ctx, rawIDToken)
 	if err != nil {
-		return web.JsonError(err)
+		c.redirectWithError(conf.Console, c.Ctx, err)
+		return nil
 	}
 	claimsT := new(json.RawMessage)
 	if err := idToken.Claims(&claimsT); err != nil {
-		return web.JsonError(err)
+		c.redirectWithError(conf.Console, c.Ctx, err)
+		return nil
 	}
 	buff := new(bytes.Buffer)
 	if err := json.Indent(buff, *claimsT, "", "  "); err != nil {
-		return web.JsonError(err)
+		c.redirectWithError(conf.Console, c.Ctx, err)
+		return nil
 	}
 	oidcClaims := &struct {
 		IDToken       string `json:"id_token,omitempty"`
@@ -165,7 +179,8 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 		return web.JsonError(err)
 	}
 	if oidcClaims.Email == "" {
-		return web.JsonErrorMsg("Email is required from OIDC provider")
+		c.redirectWithError(conf.Console, c.Ctx, fmt.Errorf("email is required from OIDC provider"))
+		return nil
 	}
 	// 查找或创建用户
 	user := services.UserService.FindOne(sqls.NewCnd().Eq("email", oidcClaims.Email))
@@ -187,7 +202,8 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 			UpdateTime:    time.Now().Unix(),
 		}
 		if err := services.UserService.Create(user); err != nil {
-			return web.JsonError(err)
+			c.redirectWithError(conf.Console, c.Ctx, err)
+			return nil
 		}
 	}
 	// 跳转回原地址
@@ -195,5 +211,38 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 	if r, ok := claims["redirect"].(string); ok && r != "" {
 		redirect = r
 	}
-	return render.BuildLoginSuccess(c.Ctx, user, redirect)
+	url := fmt.Sprintf("%s%s", conf.Console, redirect)
+	tokenGenerate, err := services.UserTokenService.Generate(user.Id)
+	if err != nil {
+		c.redirectWithError(conf.Console, c.Ctx, err)
+		return nil
+	}
+	c.Ctx.SetCookieKV(
+		constants.CookieTokenKey,
+		tokenGenerate,
+		context.CookieHTTPOnly(true),
+		context.CookieExpires(365*24*time.Hour),
+		context.CookieDomain(".changhong.com"),
+		context.CookieSameSite(http.SameSiteNoneMode),
+		context.CookieSecure,
+	)
+	c.Ctx.Redirect(url, iris.StatusFound)
+	return nil
+}
+
+func (c *OIDCController) redirectWithError(console string, ctx iris.Context, err error) {
+	errResponse := struct {
+		ErrorCode int         `json:"errorCode"`
+		Message   string      `json:"message"`
+		Data      interface{} `json:"data,omitempty"`
+		Success   bool        `json:"success"`
+	}{
+		ErrorCode: 0,
+		Message:   err.Error(),
+		Success:   false,
+	}
+	data, _ := json.Marshal(errResponse)
+	encoded := base64.RawURLEncoding.EncodeToString(data)
+	target := fmt.Sprintf("%s?data=%s", console, encoded)
+	ctx.Redirect(target, iris.StatusFound)
 }
