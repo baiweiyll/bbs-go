@@ -77,7 +77,7 @@ func (c *OIDCController) GetSignin() *web.JsonResult {
 	if c.Ctx.FormValue("type") != "" {
 		url += "&type=" + c.Ctx.FormValue("type")
 	}
-	c.Ctx.Redirect(url)
+	c.Ctx.Redirect(url, iris.StatusFound)
 	return nil
 }
 
