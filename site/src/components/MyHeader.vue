@@ -100,13 +100,6 @@ function handleLoginClick() {
   window.location.href = "/api/login/oidc/signin";
 }
 
-// function handleLoginClick() {
-//   // 构造完整的 OIDC 登录 URL
-//   const oidcLoginUrl = "http://10.4.211.60:31082/api/login/oidc/signin";
-
-//   // 直接跳转，让浏览器完整处理 OIDC 流程
-//   window.location.href = oidcLoginUrl;
-// }
 </script>
 
 <style lang="scss" scoped>
