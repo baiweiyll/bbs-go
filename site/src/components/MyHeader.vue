@@ -1,25 +1,13 @@
 <template>
-  <nav
-    class="navbar has-shadow is-fixed-top"
-    role="navigation"
-    aria-label="main navigation"
-  >
+  <nav class="navbar has-shadow is-fixed-top" role="navigation" aria-label="main navigation">
     <div class="container">
       <div class="navbar-brand">
         <nuxt-link to="/" class="navbar-item">
-          <img
-            v-if="config.siteLogo"
-            :alt="config.siteTitle"
-            :src="config.siteLogo"
-          />
+          <img v-if="config.siteLogo" :alt="config.siteTitle" :src="config.siteLogo" />
           <img v-else :alt="config.siteTitle" src="~/assets/images/logo.png" />
         </nuxt-link>
-        <a
-          :class="{ 'is-active': navbarActive }"
-          class="navbar-burger burger"
-          data-target="navbarBasic"
-          @click="toggleNav"
-        >
+        <a :class="{ 'is-active': navbarActive }" class="navbar-burger burger" data-target="navbarBasic"
+          @click="toggleNav">
           <span aria-hidden="true" />
           <span aria-hidden="true" />
           <span aria-hidden="true" />
@@ -27,12 +15,7 @@
       </div>
       <div :class="{ 'is-active': navbarActive }" class="navbar-menu">
         <div class="navbar-start">
-          <nuxt-link
-            v-for="(nav, index) in config.siteNavs"
-            :key="index"
-            :to="nav.url"
-            class="navbar-item"
-          >
+          <nuxt-link v-for="(nav, index) in config.siteNavs" :key="index" :to="nav.url" class="navbar-item">
             {{ nav.title }}
           </nuxt-link>
         </div>
@@ -48,17 +31,10 @@
 
           <msg-notice v-if="user" />
 
-          <div
-            v-if="user"
-            class="navbar-item has-dropdown is-hoverable user-menus"
-          >
+          <div v-if="user" class="navbar-item has-dropdown is-hoverable user-menus">
             <div class="navbar-link">
               <MyAvatar :user="user" :size="24" />
-              <span
-                :to="`/user/${user.id}`"
-                class="user-menus-nickname ellipsis"
-                >{{ user.nickname }}</span
-              >
+              <span :to="`/user/${user.id}`" class="user-menus-nickname ellipsis">{{ user.nickname }}</span>
             </div>
             <div class="navbar-dropdown">
               <nuxt-link class="navbar-item" :to="`/user/${user.id}`">
@@ -81,9 +57,12 @@
           </div>
           <div v-else class="navbar-item">
             <div class="buttons">
-              <nuxt-link class="button login-btn" to="/user/signin">
+              <!-- <nuxt-link class="button login-btn" to="/user/signin">
                 {{ $t("common.header.login") }}
-              </nuxt-link>
+              </nuxt-link> -->
+              <a class="button login-btn" @click="handleLoginClick">
+                {{ $t("common.header.login") }}
+              </a>
             </div>
           </div>
           <div class="navbar-item">
@@ -115,6 +94,19 @@ async function signout() {
     useLinkTo("/");
   }
 }
+
+function handleLoginClick() {
+  // 直接跳转到登录接口，让浏览器处理302重定向
+  window.location.href = "/api/login/oidc/signin";
+}
+
+// function handleLoginClick() {
+//   // 构造完整的 OIDC 登录 URL
+//   const oidcLoginUrl = "http://10.4.211.60:31082/api/login/oidc/signin";
+
+//   // 直接跳转，让浏览器完整处理 OIDC 流程
+//   window.location.href = oidcLoginUrl;
+// }
 </script>
 
 <style lang="scss" scoped>
@@ -131,6 +123,7 @@ async function signout() {
     color: var(--text-color);
     background-color: #3174dc;
     width: 100px;
+
     &:hover {
       color: var(--text-color);
       background-color: #4d91fa;
@@ -140,6 +133,7 @@ async function signout() {
   .login-btn {
     height: 32px;
     border-color: #000; // TODO
+
     &:hover {
       color: var(--text-color3);
       border-color: var(--text-color3);
@@ -163,17 +157,20 @@ async function signout() {
       text-overflow: ellipsis;
     }
   }
+
   .navbar-dropdown {
     border: 1px solid var(--border-color);
 
     a {
       display: flex;
       align-items: center;
+
       // padding: 8px 16px;
       img {
         width: 20px;
         height: 20px;
       }
+
       span {
         margin-left: 10px;
         width: 56px;
