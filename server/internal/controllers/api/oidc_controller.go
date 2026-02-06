@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"log/slog"
 	"net/http"
 	"time"
 
@@ -77,6 +78,7 @@ func (c *OIDCController) GetSignin() *web.JsonResult {
 	if c.Ctx.FormValue("type") != "" {
 		url += "&type=" + c.Ctx.FormValue("type")
 	}
+	slog.Info("OIDC login", "state", state, "redirect", redirect)
 	c.Ctx.Redirect(url, iris.StatusFound)
 	return nil
 }
@@ -86,11 +88,13 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 	conf := config.Instance.OIDC
 	incomingState := c.Ctx.URLParam("state")
 	if incomingState == "" {
+		slog.Error("OIDC state not found")
 		c.redirectWithError(conf.Console, c.Ctx, fmt.Errorf("OIDC state not found"))
 		return nil
 	}
 	stateToken := c.Ctx.GetCookie("oidc_state_token")
 	if stateToken == "" {
+		slog.Error("OIDC state token not found")
 		c.redirectWithError(conf.Console, c.Ctx, fmt.Errorf("OIDC state token not found"))
 		return nil
 	}
@@ -102,22 +106,26 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 		return []byte(conf.SecretKey), nil
 	})
 	if err != nil || !token.Valid {
+		slog.Error("OIDC state token invalid", "error", err)
 		c.redirectWithError(conf.Console, c.Ctx, fmt.Errorf("invalid OIDC state token"))
 		return nil
 	}
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok {
+		slog.Error("invalid OIDC state token clasims")
 		c.redirectWithError(conf.Console, c.Ctx, fmt.Errorf("invalid OIDC state token claims"))
 		return nil
 	}
 	expectedState := claims["state"].(string)
 	if expectedState != incomingState {
+		slog.Error("OIDC state mismatch")
 		c.redirectWithError(conf.Console, c.Ctx, fmt.Errorf("OIDC state mismatch"))
 		return nil
 	}
 	ctx := c.Ctx.Request().Context()
 	provider, err := oidc.NewProvider(ctx, conf.Issuer)
 	if err != nil {
+		slog.Error("OIDC provider error", "error", err)
 		c.redirectWithError(conf.Console, c.Ctx, err)
 		return nil
 	}
@@ -139,27 +147,32 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 	// 使用 Code 换取 Token
 	oauth2Token, err := oauth2Config.Exchange(ctx, c.Ctx.URLParam("code"))
 	if err != nil {
+		slog.Error("OIDC exchange error", "error", err)
 		c.redirectWithError(conf.Console, c.Ctx, err)
 		return nil
 	}
 	rawIDToken, ok := oauth2Token.Extra("id_token").(string)
 	if !ok {
+		slog.Error("OIDC no id_token field in oauth2 token")
 		c.redirectWithError(conf.Console, c.Ctx, fmt.Errorf("no id_token field in oauth2 token"))
 		return nil
 	}
 	verifier := provider.Verifier(&oidc.Config{ClientID: conf.ClientID})
 	idToken, err := verifier.Verify(ctx, rawIDToken)
 	if err != nil {
+		slog.Error("OIDC id_token error", "error", err)
 		c.redirectWithError(conf.Console, c.Ctx, err)
 		return nil
 	}
 	claimsT := new(json.RawMessage)
 	if err := idToken.Claims(&claimsT); err != nil {
+		slog.Error("OIDC id_token error", "error", err)
 		c.redirectWithError(conf.Console, c.Ctx, err)
 		return nil
 	}
 	buff := new(bytes.Buffer)
 	if err := json.Indent(buff, *claimsT, "", "  "); err != nil {
+		slog.Error("OIDC indent error", "error", err)
 		c.redirectWithError(conf.Console, c.Ctx, err)
 		return nil
 	}
@@ -176,9 +189,12 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 		LoginType     string `json:"login_type"`
 	}{}
 	if err := json.Unmarshal(buff.Bytes(), oidcClaims); err != nil {
-		return web.JsonError(err)
+		slog.Error("OIDC parse error", "error", err)
+		c.redirectWithError(conf.Console, c.Ctx, err)
+		return nil
 	}
 	if oidcClaims.Email == "" {
+		slog.Error("OIDC email is required")
 		c.redirectWithError(conf.Console, c.Ctx, fmt.Errorf("email is required from OIDC provider"))
 		return nil
 	}
@@ -202,6 +218,7 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 			UpdateTime:    time.Now().Unix(),
 		}
 		if err := services.UserService.Create(user); err != nil {
+			slog.Error("OIDC create user error", "error", err)
 			c.redirectWithError(conf.Console, c.Ctx, err)
 			return nil
 		}
@@ -214,6 +231,7 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 	url := fmt.Sprintf("%s%s", conf.Console, redirect)
 	tokenGenerate, err := services.UserTokenService.Generate(user.Id)
 	if err != nil {
+		slog.Error("OIDC generate token error", "error", err)
 		c.redirectWithError(conf.Console, c.Ctx, err)
 		return nil
 	}
