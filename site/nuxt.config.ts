@@ -6,6 +6,13 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   srcDir: 'src/',
   ssr: ssr,
+  
+  runtimeConfig: {
+    public: {
+      serverURL: serverURL,
+    },
+  },
+  
   modules: [
     '@pinia/nuxt',
     '@vueuse/nuxt',
