@@ -5,3 +5,5 @@ dist
 node_modules
 .nuxt
 .docker-compose/mysql/data
+.env.local
+.env.development
