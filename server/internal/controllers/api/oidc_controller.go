@@ -78,7 +78,7 @@ func (c *OIDCController) GetSignin() *web.JsonResult {
 	if c.Ctx.FormValue("type") != "" {
 		url += "&type=" + c.Ctx.FormValue("type")
 	}
-	slog.Info("OIDC login", "state", state, "redirect", redirect)
+	slog.Info("OIDC login", slog.Any("state", state), slog.Any("redirect", redirect), slog.Any("URL", url))
 	c.Ctx.Redirect(url, iris.StatusFound)
 	return nil
 }
@@ -106,7 +106,7 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 		return []byte(conf.SecretKey), nil
 	})
 	if err != nil || !token.Valid {
-		slog.Error("OIDC state token invalid", "error", err)
+		slog.Error("OIDC state token invalid", slog.Any("error", err))
 		c.redirectWithError(conf.Console, c.Ctx, fmt.Errorf("invalid OIDC state token"))
 		return nil
 	}
@@ -125,7 +125,7 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 	ctx := c.Ctx.Request().Context()
 	provider, err := oidc.NewProvider(ctx, conf.Issuer)
 	if err != nil {
-		slog.Error("OIDC provider error", "error", err)
+		slog.Error("OIDC provider error", slog.Any("error", err))
 		c.redirectWithError(conf.Console, c.Ctx, err)
 		return nil
 	}
@@ -147,7 +147,7 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 	// 使用 Code 换取 Token
 	oauth2Token, err := oauth2Config.Exchange(ctx, c.Ctx.URLParam("code"))
 	if err != nil {
-		slog.Error("OIDC exchange error", "error", err)
+		slog.Error("OIDC exchange error", slog.Any("error", err))
 		c.redirectWithError(conf.Console, c.Ctx, err)
 		return nil
 	}
@@ -160,19 +160,19 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 	verifier := provider.Verifier(&oidc.Config{ClientID: conf.ClientID})
 	idToken, err := verifier.Verify(ctx, rawIDToken)
 	if err != nil {
-		slog.Error("OIDC id_token error", "error", err)
+		slog.Error("OIDC id_token error", slog.Any("error", err))
 		c.redirectWithError(conf.Console, c.Ctx, err)
 		return nil
 	}
 	claimsT := new(json.RawMessage)
 	if err := idToken.Claims(&claimsT); err != nil {
-		slog.Error("OIDC id_token error", "error", err)
+		slog.Error("OIDC claims token error", slog.Any("error", err))
 		c.redirectWithError(conf.Console, c.Ctx, err)
 		return nil
 	}
 	buff := new(bytes.Buffer)
 	if err := json.Indent(buff, *claimsT, "", "  "); err != nil {
-		slog.Error("OIDC indent error", "error", err)
+		slog.Error("OIDC indent error", slog.Any("error", err))
 		c.redirectWithError(conf.Console, c.Ctx, err)
 		return nil
 	}
@@ -189,7 +189,7 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 		LoginType     string `json:"login_type"`
 	}{}
 	if err := json.Unmarshal(buff.Bytes(), oidcClaims); err != nil {
-		slog.Error("OIDC parse error", "error", err)
+		slog.Error("OIDC parse error", slog.Any("error", err))
 		c.redirectWithError(conf.Console, c.Ctx, err)
 		return nil
 	}
@@ -218,7 +218,7 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 			UpdateTime:    time.Now().Unix(),
 		}
 		if err := services.UserService.Create(user); err != nil {
-			slog.Error("OIDC create user error", "error", err)
+			slog.Error("OIDC create user error", slog.Any("error", err))
 			c.redirectWithError(conf.Console, c.Ctx, err)
 			return nil
 		}
@@ -228,10 +228,17 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 	if r, ok := claims["redirect"].(string); ok && r != "" {
 		redirect = r
 	}
-	url := fmt.Sprintf("%s%s", conf.Console, redirect)
+	data, err := json.Marshal(user)
+	if err != nil {
+		slog.Error("Failed to marshal user to json", slog.Any("error", err))
+		c.redirectWithError(conf.Console, c.Ctx, err)
+		return nil
+	}
+	base64Data := base64.RawURLEncoding.EncodeToString(data)
+	url := fmt.Sprintf("%s?redirect=%s&data=%s", conf.Console, redirect, base64Data)
 	tokenGenerate, err := services.UserTokenService.Generate(user.Id)
 	if err != nil {
-		slog.Error("OIDC generate token error", "error", err)
+		slog.Error("OIDC generate token error", slog.Any("error", err))
 		c.redirectWithError(conf.Console, c.Ctx, err)
 		return nil
 	}
@@ -244,6 +251,7 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 		context.CookieSameSite(http.SameSiteNoneMode),
 		context.CookieSecure,
 	)
+	slog.Info("Callback redirect url", slog.Any("URL", url))
 	c.Ctx.Redirect(url, iris.StatusFound)
 	return nil
 }
