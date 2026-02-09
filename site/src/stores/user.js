@@ -44,7 +44,7 @@ export const useUserStore = defineStore("user", {
       };
     },
     async signout() {
-      await useHttpGet("/api/login/signout");
+      await useHttpGet("/oidc/login/signout");
       this.user = null;
       // 清除 localStorage 中的用户信息
       if (typeof localStorage !== 'undefined') {
