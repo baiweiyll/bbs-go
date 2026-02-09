@@ -84,6 +84,16 @@ export default defineNuxtConfig({
 
   nitro: {
     routeRules: {
+      // OIDC 登录接口代理，配置不跟随302重定向
+      '/oidc/**': {
+        proxy: {
+          to: `${serverURL}/oidc/**`,
+          fetchOptions: {
+            // 关键配置：不跟随重定向，让浏览器处理302
+            redirect: 'manual',
+          },
+        },
+      },
       '/api/**': {
         proxy: `${serverURL}/api/**`,
       },

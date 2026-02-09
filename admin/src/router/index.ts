@@ -28,6 +28,22 @@ const router = createRouter({
         requiresAuth: false,
       },
     },
+    {
+      path: '/callback',
+      name: 'loginCallback',
+      component: () => import('@/views/login/callback.vue'),
+      meta: {
+        requiresAuth: false,
+      },
+    },
+    {
+      path: '/console',
+      name: 'loginConsole',
+      component: () => import('@/views/login/console.vue'),
+      meta: {
+        requiresAuth: false,
+      },
+    },
     REDIRECT_MAIN,
     NOT_FOUND_ROUTE,
   ],
