@@ -2,17 +2,13 @@ package api
 
 import (
 	"bbs-go/internal/controllers/render"
-	"fmt"
-	"log/slog"
 
 	"github.com/dchest/captcha"
 	"github.com/kataras/iris/v12"
-	"github.com/kataras/iris/v12/context"
 	"github.com/mlogclub/simple/web"
 	"github.com/mlogclub/simple/web/params"
 
 	captcha2 "bbs-go/internal/pkg/captcha"
-	"bbs-go/internal/pkg/config"
 	"bbs-go/internal/pkg/errs"
 	"bbs-go/internal/services"
 )
@@ -83,17 +79,9 @@ func (c *LoginController) PostSignin() *web.JsonResult {
 
 // 退出登录
 func (c *LoginController) GetSignout() *web.JsonResult {
-	config := config.Instance.OIDC
 	err := services.UserTokenService.Signout(c.Ctx)
 	if err != nil {
 		return web.JsonError(err)
 	}
-	c.Ctx.RemoveCookie("oidc_state_token", context.CookieDomain(config.Domain))
-	url := fmt.Sprintf("%s/logout?client_id=%s&redirect_uri=%s",
-		config.Issuer,
-		config.ClientID,
-		config.Redirect)
-	slog.Info("Logout redirect", slog.Any("URL", url))
-	c.Ctx.Redirect(url, iris.StatusFound)
-	return nil
+	return web.JsonSuccess()
 }
