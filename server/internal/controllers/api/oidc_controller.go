@@ -72,7 +72,8 @@ func (c *OIDCController) GetSignin() *web.JsonResult {
 		stateToken,
 		context.CookieHTTPOnly(true),
 		context.CookieExpires(10*time.Minute),
-		context.CookieDomain(conf.Domain),
+		context.CookiePath("/"),
+		context.CookieDomain(""),
 	)
 	url := oauth2Config.AuthCodeURL(state)
 	if c.Ctx.FormValue("type") != "" {
@@ -99,7 +100,7 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 		return nil
 	}
 	// 验证 State Token
-	token, err := jwt.Parse(stateToken, func(token *jwt.Token) (interface{}, error) {
+	token, err := jwt.Parse(stateToken, func(token *jwt.Token) (any, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, jwt.ErrSignatureInvalid
 		}
@@ -269,7 +270,12 @@ func (c *OIDCController) GetSignout() *web.JsonResult {
 	if err != nil {
 		return web.JsonError(err)
 	}
-	c.Ctx.RemoveCookie("oidc_state_token", context.CookieDomain(config.Domain))
+	c.Ctx.RemoveCookie(
+		"oidc_state_token",
+		context.CookieHTTPOnly(true),
+		context.CookiePath("/"),
+		context.CookieDomain(""),
+	)
 	url := fmt.Sprintf("%s/logout?client_id=%s&redirect_uri=%s",
 		config.Issuer,
 		config.ClientID,
