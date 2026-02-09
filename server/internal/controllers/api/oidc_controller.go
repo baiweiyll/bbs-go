@@ -70,8 +70,9 @@ func (c *OIDCController) GetSignin() *web.JsonResult {
 	c.Ctx.SetCookieKV(
 		"oidc_state_token",
 		stateToken,
-		iris.CookieExpires(10*time.Minute),
-		iris.CookiePath("/"),
+		context.CookieHTTPOnly(true),
+		context.CookieExpires(10*time.Minute),
+		context.CookieDomain(conf.Domain),
 	)
 	url := oauth2Config.AuthCodeURL(state)
 	if c.Ctx.FormValue("type") != "" {
