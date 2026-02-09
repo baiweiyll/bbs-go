@@ -80,6 +80,7 @@ type OIDCConfig struct {
 	Redirect  string `yaml:"redirect"`
 	Callback  string `yaml:"callback"`
 	Console   string `yaml:"console"`
+	Domain    string `yaml:"domain"`
 }
 
 type LoggerConfig struct {
