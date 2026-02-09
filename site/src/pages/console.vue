@@ -36,7 +36,7 @@ const processLoginCallback = () => {
     const decodedData = Base64.decode(loginData)
 
     // 解析用户信息
-    const userInfo = JSON.parse(decodedData)
+    const userInfo = JSON.parse(decodedData)?.user || null
 
     // 更新 Pinia store 状态
     const userStore = useUserStore()
