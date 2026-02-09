@@ -44,12 +44,13 @@ export const useUserStore = defineStore("user", {
       };
     },
     async signout() {
-      await useHttpGet("/oidc/login/signout");
+      // await useHttpGet("/oidc/login/signout");
       this.user = null;
       // 清除 localStorage 中的用户信息
       if (typeof localStorage !== 'undefined') {
         localStorage.removeItem('userInfo');
       }
+       window.location.href = "/oidc/login/signout";
     },
     async signup(form) {
       const { user, token, redirect } = await useHttpPost(
