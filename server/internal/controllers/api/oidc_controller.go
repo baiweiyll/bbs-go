@@ -246,7 +246,7 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 		tokenGenerate,
 		context.CookieHTTPOnly(true),
 		context.CookieExpires(365*24*time.Hour),
-		context.CookieDomain("changhong.com"),
+		context.CookieDomain(conf.Domain),
 	)
 	data, err := json.Marshal(res)
 	if err != nil {
