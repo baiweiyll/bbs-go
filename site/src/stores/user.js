@@ -10,6 +10,22 @@ export const useUserStore = defineStore("user", {
     },
   },
   actions: {
+    // 设置用户信息
+    setUser(userInfo) {
+      console.log('UserStore - Setting user:', userInfo);
+      this.user = userInfo;
+      console.log('UserStore - User set to:', this.user);
+      
+      // 同步保存到 localStorage
+      if (typeof localStorage !== 'undefined' && userInfo) {
+        localStorage.setItem('userInfo', JSON.stringify(userInfo));
+        console.log('UserStore - Saved to localStorage:', userInfo.id);
+      } else if (typeof localStorage !== 'undefined' && !userInfo) {
+        localStorage.removeItem('userInfo');
+        console.log('UserStore - Removed from localStorage');
+      }
+    },
+    
     async fetchCurrent() {
       const { data } = await useMyFetch("/api/user/current");
       this.user = data.value;
@@ -30,6 +46,10 @@ export const useUserStore = defineStore("user", {
     async signout() {
       await useHttpGet("/api/login/signout");
       this.user = null;
+      // 清除 localStorage 中的用户信息
+      if (typeof localStorage !== 'undefined') {
+        localStorage.removeItem('userInfo');
+      }
     },
     async signup(form) {
       const { user, token, redirect } = await useHttpPost(

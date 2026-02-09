@@ -79,6 +79,25 @@ const userStore = useUserStore();
 const configStore = useConfigStore();
 
 const { user } = storeToRefs(userStore);
+
+// 监听用户状态变化
+watch(user, (newUser) => {
+  console.log('MyHeader - User state changed:', newUser);
+  console.log('MyHeader - User ID:', newUser?.id);
+  console.log('MyHeader - User nickname:', newUser?.nickname);
+}, { immediate: true });
+
+// 组件挂载时检查当前用户状态
+onMounted(() => {
+  console.log('MyHeader mounted - Current user:', user.value);
+  console.log('MyHeader mounted - UserStore user:', userStore.user);
+  
+  // 检查 localStorage
+  if (typeof localStorage !== 'undefined') {
+    const storedUserInfo = localStorage.getItem('userInfo');
+    console.log('MyHeader - Stored user info:', storedUserInfo);
+  }
+});
 const { config } = storeToRefs(configStore);
 const { t } = useI18n();
 
