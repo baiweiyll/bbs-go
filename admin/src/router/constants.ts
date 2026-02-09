@@ -9,6 +9,8 @@ export const NOT_FOUND_ROUTE_NAME = 'notFound';
 export const WHITE_LIST = [
   // { name: NOT_FOUND_ROUTE_NAME, children: [] },
   { name: 'login', children: [] },
+  { name: 'loginCallback', children: [] },
+  { name: 'loginConsole', children: [] },
 ];
 
 export const NOT_FOUND = {

@@ -75,11 +75,11 @@
 </template>
 
 <script setup>
-const config = useRuntimeConfig();
-const serverURL = config.public.serverURL;
 const userStore = useUserStore();
+const configStore = useConfigStore();
 
 const { user } = storeToRefs(userStore);
+const { config } = storeToRefs(configStore);
 const { t } = useI18n();
 
 const navbarActive = ref(false);
@@ -96,8 +96,8 @@ async function signout() {
 }
 
 function handleLoginClick() {
-  // 直接跳转到登录接口，让浏览器处理302重定向
-  window.location.href = serverURL + "/api/login/oidc/signin";
+  // 跳转到 OIDC 登录接口，通过 Nuxt 代理转发到后端
+  window.location.href = "/oidc/login/signin";
 }
 
 </script>

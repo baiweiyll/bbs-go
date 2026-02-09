@@ -5,8 +5,6 @@
 </template>
   
 <script setup lang="ts">
-const config = useRuntimeConfig();
-const serverURL = config.public.serverURL;
 import { useRouter } from '#app'
 
 // 使用 Nuxt 3 的路由
@@ -34,8 +32,8 @@ const processLoginCallback = () => {
     router.push('/')
     return
   } else {
-    // 直接跳转到登录接口，让浏览器处理302重定向
-    window.location.href = serverURL + "/api/login/oidc/callback?code=" + code + "&state=" + state;
+    // 跳转到 OIDC 回调接口，通过 Nuxt 代理转发到后端
+    window.location.href = "/oidc/login/callback?code=" + code + "&state=" + state;
   }
 
   // try {
