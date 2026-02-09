@@ -70,6 +70,17 @@ type Config struct {
 	Search         SearchConfig   `yaml:"search"`         // 搜索配置
 	BaiduSEO       BaiduSEOConfig `yaml:"baiduSEO"`       // 百度SEO配置
 	SmSEO          SmSEOConfig    `yaml:"smSEO"`          // 神马搜索SEO配置
+	OIDC           OIDCConfig     `yaml:"oidc"`           // OIDC配置
+}
+
+type OIDCConfig struct {
+	Issuer    string `yaml:"issuer"`
+	ClientID  string `yaml:"clientId"`
+	SecretKey string `yaml:"secretKey"`
+	Redirect  string `yaml:"redirect"`
+	Callback  string `yaml:"callback"`
+	Console   string `yaml:"console"`
+	Domain    string `yaml:"domain"`
 }
 
 type LoggerConfig struct {

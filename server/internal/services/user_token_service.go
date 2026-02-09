@@ -2,7 +2,9 @@ package services
 
 import (
 	"bbs-go/internal/models/constants"
+	"bbs-go/internal/pkg/config"
 	"bbs-go/internal/pkg/errs"
+	"log/slog"
 	"strings"
 	"time"
 
@@ -11,6 +13,7 @@ import (
 	"bbs-go/internal/repositories"
 
 	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/context"
 	"github.com/mlogclub/simple/common/dates"
 	"github.com/mlogclub/simple/common/strs"
 	"github.com/mlogclub/simple/sqls"
@@ -61,7 +64,9 @@ func (s *userTokenService) CheckLogin(ctx iris.Context) (*models.User, error) {
 }
 
 func (s *userTokenService) Signout(ctx iris.Context) error {
+	config := config.Instance.OIDC
 	token := s.GetUserToken(ctx)
+	slog.Info("Signout", slog.Any("Token", token))
 	userToken := repositories.UserTokenRepository.GetByToken(sqls.DB(), token)
 	if userToken == nil {
 		return nil
@@ -70,7 +75,7 @@ func (s *userTokenService) Signout(ctx iris.Context) error {
 	if err != nil {
 		return err
 	}
-	ctx.RemoveCookie(constants.CookieTokenKey)
+	ctx.RemoveCookie(constants.CookieTokenKey, context.CookieDomain(config.Domain))
 	return nil
 }
 

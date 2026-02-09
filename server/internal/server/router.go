@@ -79,6 +79,11 @@ func NewServer() {
 		m.Party("/forget-password").Handle(new(api.ForgetPasswordController))
 	})
 
+	mvc.Configure(app.Party("/oidc"), func(m *mvc.Application) {
+		m.Router.Use(middleware.Install)
+		m.Party("/login").Handle(new(api.OIDCController))
+	})
+
 	// admin
 	mvc.Configure(app.Party("/api/admin"), func(m *mvc.Application) {
 		m.Router.Use(middleware.Install)
