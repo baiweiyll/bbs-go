@@ -262,6 +262,23 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 	return nil
 }
 
+// 退出登录
+func (c *OIDCController) GetSignout() *web.JsonResult {
+	config := config.Instance.OIDC
+	err := services.UserTokenService.Signout(c.Ctx)
+	if err != nil {
+		return web.JsonError(err)
+	}
+	c.Ctx.RemoveCookie("oidc_state_token", context.CookieDomain(config.Domain))
+	url := fmt.Sprintf("%s/logout?client_id=%s&redirect_uri=%s",
+		config.Issuer,
+		config.ClientID,
+		config.Redirect)
+	slog.Info("Logout redirect", slog.Any("URL", url))
+	c.Ctx.Redirect(url, iris.StatusFound)
+	return nil
+}
+
 func (c *OIDCController) redirectWithError(console string, ctx iris.Context, err error) {
 	errResponse := struct {
 		ErrorCode int         `json:"errorCode"`
