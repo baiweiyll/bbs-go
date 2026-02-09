@@ -70,8 +70,10 @@ func (c *OIDCController) GetSignin() *web.JsonResult {
 	c.Ctx.SetCookieKV(
 		"oidc_state_token",
 		stateToken,
+		context.CookieHTTPOnly(true),
 		context.CookieExpires(10*time.Minute),
 		context.CookiePath("/"),
+		context.CookieDomain(""),
 	)
 	url := oauth2Config.AuthCodeURL(state)
 	if c.Ctx.FormValue("type") != "" {
@@ -268,7 +270,12 @@ func (c *OIDCController) GetSignout() *web.JsonResult {
 	if err != nil {
 		return web.JsonError(err)
 	}
-	c.Ctx.RemoveCookie("oidc_state_token", context.CookiePath("/"))
+	c.Ctx.RemoveCookie(
+		"oidc_state_token",
+		context.CookieHTTPOnly(true),
+		context.CookiePath("/"),
+		context.CookieDomain(""),
+	)
 	url := fmt.Sprintf("%s/logout?client_id=%s&redirect_uri=%s",
 		config.Issuer,
 		config.ClientID,
