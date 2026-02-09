@@ -7,6 +7,7 @@ import (
 
 	"github.com/dchest/captcha"
 	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/context"
 	"github.com/mlogclub/simple/web"
 	"github.com/mlogclub/simple/web/params"
 
@@ -87,10 +88,12 @@ func (c *LoginController) GetSignout() *web.JsonResult {
 	if err != nil {
 		return web.JsonError(err)
 	}
+	c.Ctx.RemoveCookie("oidc_state_token", context.CookieDomain(config.Domain))
 	url := fmt.Sprintf("%s/logout?client_id=%s&redirect_uri=%s",
 		config.Issuer,
 		config.ClientID,
 		config.Redirect)
 	slog.Info("Logout redirect", slog.Any("URL", url))
-	return web.JsonData(url)
+	c.Ctx.Redirect(url, iris.StatusFound)
+	return nil
 }
