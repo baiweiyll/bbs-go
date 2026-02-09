@@ -223,34 +223,42 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 			return nil
 		}
 	}
+	res := struct {
+		Redirect string      `json:"redirect"`
+		Token    string      `json:"token"`
+		User     models.User `json:"user"`
+	}{}
 	// 跳转回原地址
 	redirect := "/"
 	if r, ok := claims["redirect"].(string); ok && r != "" {
 		redirect = r
 	}
-	data, err := json.Marshal(user)
-	if err != nil {
-		slog.Error("Failed to marshal user to json", slog.Any("error", err))
-		c.redirectWithError(conf.Console, c.Ctx, err)
-		return nil
-	}
-	base64Data := base64.RawURLEncoding.EncodeToString(data)
-	url := fmt.Sprintf("%s?redirect=%s&data=%s", conf.Console, redirect, base64Data)
+	res.Redirect = redirect
+	res.User = *user
 	tokenGenerate, err := services.UserTokenService.Generate(user.Id)
 	if err != nil {
 		slog.Error("OIDC generate token error", slog.Any("error", err))
 		c.redirectWithError(conf.Console, c.Ctx, err)
 		return nil
 	}
+	res.Token = tokenGenerate
 	c.Ctx.SetCookieKV(
 		constants.CookieTokenKey,
 		tokenGenerate,
 		context.CookieHTTPOnly(true),
 		context.CookieExpires(365*24*time.Hour),
-		context.CookieDomain(".changhong.com"),
-		context.CookieSameSite(http.SameSiteNoneMode),
+		context.CookieDomain("changhong.com"),
+		context.CookieSameSite(http.SameSiteLaxMode),
 		context.CookieSecure,
 	)
+	data, err := json.Marshal(res)
+	if err != nil {
+		slog.Error("Failed to marshal user to json", slog.Any("error", err))
+		c.redirectWithError(conf.Console, c.Ctx, err)
+		return nil
+	}
+	base64Data := base64.RawURLEncoding.EncodeToString(data)
+	url := fmt.Sprintf("%s?data=%s", conf.Console, base64Data)
 	slog.Info("Callback redirect url", slog.Any("URL", url))
 	c.Ctx.Redirect(url, iris.StatusFound)
 	return nil
