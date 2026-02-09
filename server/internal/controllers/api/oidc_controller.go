@@ -248,8 +248,6 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 		context.CookieHTTPOnly(true),
 		context.CookieExpires(365*24*time.Hour),
 		context.CookieDomain("changhong.com"),
-		context.CookieSameSite(http.SameSiteLaxMode),
-		context.CookieSecure,
 	)
 	data, err := json.Marshal(res)
 	if err != nil {
@@ -259,7 +257,7 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 	}
 	base64Data := base64.RawURLEncoding.EncodeToString(data)
 	url := fmt.Sprintf("%s?data=%s", conf.Console, base64Data)
-	slog.Info("Callback redirect url", slog.Any("URL", url))
+	slog.Info("Callback redirect url", slog.Any("Data", res), slog.Any("URL", url))
 	c.Ctx.Redirect(url, iris.StatusFound)
 	return nil
 }
