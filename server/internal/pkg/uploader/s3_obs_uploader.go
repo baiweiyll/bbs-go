@@ -92,7 +92,7 @@ func (u *S3ObsUploader) initClient(cfg *dto.UploadConfig) error {
 		}
 		endpoint := fmt.Sprintf("http://%s", cfg.S3Obs.Endpoint)
 		if cfg.S3Obs.UseSSL {
-			endpoint = fmt.Sprintf("https://%s", endpoint)
+			endpoint = fmt.Sprintf("https://%s", cfg.S3Obs.Endpoint)
 		}
 		defaultConfig.BaseEndpoint = &endpoint
 		defaultConfig.HTTPClient = &http.Client{
