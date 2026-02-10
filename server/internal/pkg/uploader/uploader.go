@@ -29,9 +29,9 @@ func generateImageKey(data []byte, contentType string) string {
 		}
 	}
 	if config.IsProd() {
-		return "images/" + dates.Format(time.Now(), "2006/01/02/") + md5 + ext
+		return "bbs-go/images/" + dates.Format(time.Now(), "2006/01/02/") + md5 + ext
 	} else {
-		return "test/images/" + dates.Format(time.Now(), "2006/01/02/") + md5 + ext
+		return "bbs-go/test/images/" + dates.Format(time.Now(), "2006/01/02/") + md5 + ext
 	}
 }
 

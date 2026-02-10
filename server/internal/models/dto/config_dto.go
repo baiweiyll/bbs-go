@@ -55,12 +55,14 @@ type UploadMethod string
 const (
 	AliyunOss  UploadMethod = "AliyunOss"
 	TencentCos UploadMethod = "TencentCos"
+	S3Obs      UploadMethod = "S3Obs"
 )
 
 type UploadConfig struct {
 	EnableUploadMethod UploadMethod           `json:"enableUploadMethod"`
 	AliyunOss          AliyunOssUploadConfig  `json:"aliyunOss"`
 	TencentCos         TencentCosUploadConfig `json:"tencentCos"`
+	S3Obs              S3ObsUploadConfig      `json:"s3Obs"`
 }
 
 type AliyunOssUploadConfig struct {
@@ -81,4 +83,14 @@ type TencentCosUploadConfig struct {
 	Region    string `json:"region"`
 	SecretId  string `json:"secretId"`
 	SecretKey string `json:"secretKey"`
+}
+
+type S3ObsUploadConfig struct {
+	Endpoint  string `json:"endpoint"`
+	Bucket    string `json:"bucket"`
+	AccessKey string `json:"accessKey"`
+	SecretKey string `json:"secretKey"`
+	Region    string `json:"region"`
+	UseSSL    bool   `json:"useSSL"`
+	BaseURL   string `json:"baseUrl"`
 }

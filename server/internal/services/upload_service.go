@@ -64,6 +64,7 @@ func (s *uploadService) getUploader() (uploader.Uploader, error) {
 	s.once.Do(func() {
 		s.uploaderMap[dto.AliyunOss] = &uploader.AliyunOssUploader{}
 		s.uploaderMap[dto.TencentCos] = &uploader.TencentCosUploader{}
+		s.uploaderMap[dto.S3Obs] = &uploader.S3ObsUploader{}
 	})
 	cfg := SysConfigService.GetUploadConfig()
 
