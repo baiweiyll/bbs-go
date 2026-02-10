@@ -52,11 +52,11 @@ const props = defineProps({
 const localUser = ref(props.user);
 
 const isSiteOwner = computed(() => {
-  return userIsOwner(userStore.user);
+  return userStore.user?.id && userIsOwner(userStore.user);
 });
 
 const isAdmin = computed(() => {
-  return userIsOwner(userStore.user) || userIsAdmin(userStore.user);
+  return userStore.user?.id && (userIsOwner(userStore.user) || userIsAdmin(userStore.user));
 });
 
 const forbidden = (days) => {
