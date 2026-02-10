@@ -65,6 +65,13 @@ const clickLogin = async () => {
       const userStore = useUserStore();
       const { user, redirect } = await userStore.signin(form);
 
+      // 同步保存到 localStorage
+      if (typeof localStorage !== 'undefined' && user) {
+        localStorage.setItem('userInfo', JSON.stringify(user));
+      } else if (typeof localStorage !== 'undefined' && !user) {
+        localStorage.removeItem('userInfo');
+      }
+
       if (redirect) {
         useLinkTo(redirect);
       } else {
