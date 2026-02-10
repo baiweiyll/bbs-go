@@ -40,6 +40,9 @@ export function login(data: LoginData) {
 
 export function logout() {
   // axios.get('/api/login/signout');
+  if (typeof localStorage !== 'undefined') {
+    localStorage.removeItem('userInfo');
+  }
   window.location.href = "/oidc/login/signout";
 }
 
