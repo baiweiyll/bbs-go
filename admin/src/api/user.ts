@@ -39,7 +39,8 @@ export function login(data: LoginData) {
 }
 
 export function logout() {
-  axios.get('/api/login/signout');
+  // axios.get('/api/login/signout');
+  window.location.href = "/oidc/login/signout";
 }
 
 export function getUserInfo(): Promise<UserState> {

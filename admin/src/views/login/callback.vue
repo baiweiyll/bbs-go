@@ -40,7 +40,7 @@
       router.push('/');
     } else {
       // 直接跳转到登录接口,让浏览器处理302重定向
-      window.location.href = `${serverURL}/api/login/oidc/callback?code=${code}&state=${state}`;
+      window.location.href = `${serverURL}/oidc/login/callback?code=${code}&state=${state}`;
     }
   };
 
