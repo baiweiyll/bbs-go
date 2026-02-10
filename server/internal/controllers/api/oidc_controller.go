@@ -79,7 +79,7 @@ func (c *OIDCController) GetSignin() *web.JsonResult {
 	if c.Ctx.FormValue("type") != "" {
 		url += "&type=" + c.Ctx.FormValue("type")
 	}
-	slog.Info("OIDC login", slog.Any("state", state), slog.Any("redirect", redirect), slog.Any("URL", url))
+	slog.Debug("OIDC login", slog.Any("state", state), slog.Any("redirect", redirect), slog.Any("URL", url))
 	c.Ctx.Redirect(url, iris.StatusFound)
 	return nil
 }
@@ -258,7 +258,7 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 	}
 	base64Data := base64.RawURLEncoding.EncodeToString(data)
 	url := fmt.Sprintf("%s?data=%s", conf.Console, base64Data)
-	slog.Info("Callback redirect url", slog.Any("Data", res), slog.Any("URL", url))
+	slog.Debug("Callback redirect url", slog.Any("Data", res), slog.Any("URL", url))
 	c.Ctx.Redirect(url, iris.StatusFound)
 	return nil
 }
@@ -280,7 +280,7 @@ func (c *OIDCController) GetSignout() *web.JsonResult {
 		config.Issuer,
 		config.ClientID,
 		config.Redirect)
-	slog.Info("Logout redirect", slog.Any("URL", url))
+	slog.Debug("Logout redirect", slog.Any("URL", url))
 	c.Ctx.Redirect(url, iris.StatusFound)
 	return nil
 }
