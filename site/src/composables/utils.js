@@ -58,7 +58,8 @@ export function useToSignIn(redirect) {
   if (!redirect && import.meta.client) {
     redirect = window.location.pathname;
   }
-  useLinkTo("/user/signin?redirect=" + encodeURIComponent(redirect));
+  // useLinkTo("/user/signin?redirect=" + encodeURIComponent(redirect));
+  window.location.href = "/oidc/login/signin?redirect=" + encodeURIComponent(redirect);
 }
 
 /**
