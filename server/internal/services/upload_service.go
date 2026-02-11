@@ -5,7 +5,6 @@ import (
 	"bbs-go/internal/pkg/config"
 	"bbs-go/internal/pkg/uploader"
 	"fmt"
-	"log/slog"
 	"sync"
 
 	"github.com/mlogclub/simple/common/strs"
@@ -30,9 +29,7 @@ func (s *uploadService) PutImage(data []byte, contentType string) (string, error
 	if err != nil {
 		return "", err
 	}
-	slog.Info("PutImage", slog.Any("Uploader", u))
 	cfg := SysConfigService.GetUploadConfig()
-	slog.Info("PutImage", slog.Any("Loader cfg", *cfg))
 	return u.PutImage(cfg, data, contentType)
 }
 
