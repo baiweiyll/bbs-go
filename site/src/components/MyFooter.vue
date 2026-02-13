@@ -12,10 +12,10 @@
           {{ $t("component.myFooter.links") }}
         </nuxt-link>
       </div>
-      <div>
+      <!-- <div>
         Powered by
         <a href="https://bbs-go.com" target="_blank" class="light">BBS-GO</a>
-      </div>
+      </div> -->
     </div>
   </footer>
 </template>

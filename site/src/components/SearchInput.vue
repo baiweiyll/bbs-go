@@ -95,7 +95,7 @@ const submitSearch = () => {
     return;
   }
   addHistories();
-  window.location = "/search?q=" + encodeURIComponent(data.keyword);
+  window.location = "/forum/search?q=" + encodeURIComponent(data.keyword);
 };
 const onFocus = () => {
   data.inputFocus = true;

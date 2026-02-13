@@ -5,7 +5,7 @@
         <div class="topic-header-main">
           <my-avatar :user="topic.user" />
           <div class="topic-userinfo">
-            <a :href="`/user/${topic.user.id}`" class="topic-nickname">
+            <a :href="`/forum/user/${topic.user.id}`" class="topic-nickname">
               {{ topic.user.nickname }}
             </a>
             <div class="topic-time">

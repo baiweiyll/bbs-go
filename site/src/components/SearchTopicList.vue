@@ -2,11 +2,11 @@
   <div class="topic-search-items">
     <div v-for="item in results" :key="item.id" class="topic-search-item">
       <h1 class="topic-search-item-title">
-        <a target="_blank" :href="'/topic/' + item.id" v-html="item.title" />
+        <a target="_blank" :href="'/forum/topic/' + item.id" v-html="item.title" />
       </h1>
       <a
         target="_blank"
-        :href="'/topic/' + item.id"
+        :href="'/forum/topic/' + item.id"
         class="topic-search-item-summary content"
       >
         <p v-html="item.summary"></p>
