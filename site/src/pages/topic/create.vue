@@ -179,7 +179,7 @@ const topicCaptchaEnabled = computed(() => {
   return configStore.config.topicCaptcha;
 });
 
-const { data: nodes } = await useMyFetch("/api/topic/nodes");
+const { data: nodes } = await useMyFetch("/bbsapi/topic/nodes");
 
 watch(
   () => route.query,
@@ -254,7 +254,7 @@ const publishSubmit = async (captcha) => {
 
   publishing.value = true;
   try {
-    const topic = await useHttpPost("/api/topic/create", postForm.value);
+    const topic = await useHttpPost("/bbsapi/topic/create", postForm.value);
     router.push(`/topic/${topic.id}`);
   } catch (e) {
     useMsgError(e.message || e);

@@ -134,7 +134,7 @@ if (user.value != null) {
 async function submitForm() {
   try {
     await useHttpPost(
-      `/api/user/edit/${user.value.id}`,
+      `/bbsapi/user/edit/${user.value.id}`,
       useJsonToForm(form.value)
     );
     useMsgSuccess(t("user.profile.editSuccess"));

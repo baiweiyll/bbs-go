@@ -30,7 +30,7 @@
 
             <load-more-async
               v-slot="{ results }"
-              url="/api/article/user/articles"
+              url="/bbsapi/article/user/articles"
               :params="{ userId: user.id }"
             >
               <article-list :articles="results" />
@@ -49,7 +49,7 @@ useHead({
   title: t("pages.user.personalCenter"),
 });
 
-const user = await useHttpGet(`/api/user/${route.params.userId}`);
+const user = await useHttpGet(`/bbsapi/user/${route.params.userId}`);
 
 const activeTab = ref("articles");
 </script>

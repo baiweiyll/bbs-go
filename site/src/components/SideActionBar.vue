@@ -112,7 +112,7 @@ const handleLike = async () => {
   if (_liked.value) {
     try {
       await useHttpPost(
-        "/api/like/unlike",
+        "/bbsapi/like/unlike",
         useJsonToForm({
           entityType: props.entityType,
           entityId: props.entityId,
@@ -128,7 +128,7 @@ const handleLike = async () => {
   } else {
     try {
       await useHttpPost(
-        "/api/like/like",
+        "/bbsapi/like/like",
         useJsonToForm({
           entityType: props.entityType,
           entityId: props.entityId,
@@ -148,7 +148,7 @@ const handleFavorite = async () => {
   if (_favorited.value) {
     try {
       await useHttpPost(
-        "/api/favorite/delete",
+        "/bbsapi/favorite/delete",
         useJsonToForm({
           entityType: props.entityType,
           entityId: props.entityId,
@@ -163,7 +163,7 @@ const handleFavorite = async () => {
   } else {
     try {
       await useHttpPost(
-        "/api/favorite/add",
+        "/bbsapi/favorite/add",
         useJsonToForm({
           entityType: props.entityType,
           entityId: props.entityId,

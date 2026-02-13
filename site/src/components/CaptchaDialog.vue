@@ -54,7 +54,7 @@ let resolveCallback = null;
 const show = async () => {
   return new Promise(async (resolve) => {
     try {
-      captcha.value = await useHttpGet("/api/captcha/request_angle");
+      captcha.value = await useHttpGet("/bbsapi/captcha/request_angle");
       visible.value = true;
       resolveCallback = resolve;
     } catch (e) {
@@ -66,7 +66,7 @@ const show = async () => {
 
 const captchaRefresh = async () => {
   try {
-    captcha.value = await useHttpGet("/api/captcha/request_angle");
+    captcha.value = await useHttpGet("/bbsapi/captcha/request_angle");
   } catch (e) {
     useCatchError(e);
   }

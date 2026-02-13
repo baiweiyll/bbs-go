@@ -132,7 +132,7 @@ export default {
   },
   methods: {
     async loadMore() {
-      const ret = await useHttpGet("/api/comment/replies", {
+      const ret = await useHttpGet("/bbsapi/comment/replies", {
         params: {
           commentId: this.commentId,
           cursor: this.replies.cursor,
@@ -146,7 +146,7 @@ export default {
       try {
         if (comment.liked) {
           await useHttpPost(
-            "/api/like/unlike",
+            "/bbsapi/like/unlike",
             useJsonToForm({
               entityType: "comment",
               entityId: comment.id,
@@ -156,7 +156,7 @@ export default {
           comment.likeCount = comment.likeCount > 0 ? comment.likeCount - 1 : 0;
         } else {
           await useHttpPost(
-            "/api/like/like",
+            "/bbsapi/like/like",
             useJsonToForm({
               entityType: "comment",
               entityId: comment.id,
@@ -195,7 +195,7 @@ export default {
     async submitReply(parent) {
       try {
         const ret = await useHttpPost(
-          "/api/comment/create",
+          "/bbsapi/comment/create",
           useJsonToForm({
             entityType: "comment",
             entityId: this.commentId,

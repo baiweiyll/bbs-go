@@ -31,14 +31,14 @@ const username = ref(null);
 const show = async () => {
   visible.value = true;
 
-  const user = await useHttpGet("/api/user/current");
+  const user = await useHttpGet("/bbsapi/user/current");
   username.value = user.username;
 };
 
 const submit = async () => {
   try {
     await useHttpPost(
-      "/api/user/set_username",
+      "/bbsapi/user/set_username",
       useJsonToForm({
         username: username.value,
       })

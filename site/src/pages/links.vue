@@ -31,7 +31,7 @@ useHead({
   title: t("pages.links.title"),
 });
 
-const links = await useHttpGet("/api/link/list");
+const links = await useHttpGet("/bbsapi/link/list");
 </script>
 
 <style lang="scss" scoped>

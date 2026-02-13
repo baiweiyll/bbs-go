@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-const { data: links } = await useMyFetch("/api/link/top_links");
+const { data: links } = await useMyFetch("/bbsapi/link/top_links");
 </script>
 
 <style scoped lang="scss">

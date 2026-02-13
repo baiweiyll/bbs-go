@@ -129,7 +129,7 @@ async function submitCreate() {
   publishing.value = true;
   try {
     const article = await useHttpPost(
-      "/api/article/create",
+      "/bbsapi/article/create",
       useJsonToForm({
         title: postForm.value.title,
         content: postForm.value.content,

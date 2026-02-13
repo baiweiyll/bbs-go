@@ -11,7 +11,7 @@
           </div> -->
           <load-more-async
             v-slot="{ results }"
-            url="/api/topic/topics"
+            url="/bbsapi/topic/topics"
             :params="{ nodeId: nodeId }"
           >
             <topic-list :topics="results" show-sticky />
@@ -35,7 +35,7 @@ if (route.params.id === "newest") {
   nodeId = -2;
 }
 
-const { data: node } = await useMyFetch(`/api/topic/node?nodeId=${nodeId}`);
+const { data: node } = await useMyFetch(`/bbsapi/topic/node?nodeId=${nodeId}`);
 
 onMounted(() => {
   useEnvStore().setCurrentNodeId(nodeId);

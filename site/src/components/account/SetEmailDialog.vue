@@ -24,14 +24,14 @@ const email = ref(null);
 const show = async () => {
   visible.value = true;
 
-  const user = await useHttpGet("/api/user/current");
+  const user = await useHttpGet("/bbsapi/user/current");
   email.value = user.email;
 };
 
 const submit = async () => {
   try {
     await useHttpPost(
-      "/api/user/set_email",
+      "/bbsapi/user/set_email",
       useJsonToForm({
         email: email.value,
       })
