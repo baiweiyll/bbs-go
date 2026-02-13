@@ -8,7 +8,7 @@
     </div>
 
     <div class="widget-content">
-      <load-more-async v-slot="{ results }" url="/api/user/messages">
+      <load-more-async v-slot="{ results }" url="/bbsapi/user/messages">
         <ul v-if="results && results.length" class="message-list">
           <li
             v-for="message in results"

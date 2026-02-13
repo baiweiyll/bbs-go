@@ -1,7 +1,7 @@
 const ssr = process.env.NUXT_SSR === 'false' ? false : true
 const serverURL = import.meta.env.SERVER_URL || 'http://localhost:8082'
 
-// https://nuxt.com/docs/api/configuration/nuxt-config
+// https://nuxt.com/docs/bbsapi/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
   srcDir: 'src/',
@@ -65,6 +65,7 @@ export default defineNuxtConfig({
   },
 
   app: {
+    baseURL: '/forum/',
     head: {
       title: 'BBS-GO',
       htmlAttrs: { class: 'theme-light has-navbar-fixed-top' },
@@ -85,17 +86,17 @@ export default defineNuxtConfig({
   nitro: {
     routeRules: {
       // OIDC 登录接口代理，配置不跟随302重定向
-      '/oidc/**': {
+      '/bbsoidc/**': {
         proxy: {
-          to: `${serverURL}/oidc/**`,
+          to: `${serverURL}/bbsoidc/**`,
           fetchOptions: {
             // 关键配置：不跟随重定向，让浏览器处理302
             redirect: 'manual',
           },
         },
       },
-      '/api/**': {
-        proxy: `${serverURL}/api/**`,
+      '/bbsapi/**': {
+        proxy: `${serverURL}/bbsapi/**`,
       },
       '/admin/**': {
         proxy: `${serverURL}/admin/**`,

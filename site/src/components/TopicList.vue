@@ -122,7 +122,7 @@ const like = async (topic) => {
   try {
     if (topic.liked) {
       await useHttpPost(
-        "/api/like/unlike",
+        "/bbsapi/like/unlike",
         useJsonToForm({
           entityType: "topic",
           entityId: topic.id,
@@ -133,7 +133,7 @@ const like = async (topic) => {
       useMsgSuccess(t("component.topicList.unlikeSuccess"));
     } else {
       await useHttpPost(
-        "/api/like/like",
+        "/bbsapi/like/like",
         useJsonToForm({
           entityType: "topic",
           entityId: topic.id,

@@ -4,7 +4,7 @@
       ref="loadMore"
       v-slot="{ results }"
       :params="{ entityType, entityId }"
-      url="/api/comment/comments"
+      url="/bbsapi/comment/comments"
     >
       <div v-for="comment in results" :key="comment.id" class="comment">
         <div class="comment-item-left">
@@ -145,7 +145,7 @@ const like = async (comment) => {
   try {
     if (comment.liked) {
       await useHttpPost(
-        "/api/like/unlike",
+        "/bbsapi/like/unlike",
         useJsonToForm({
           entityType: "comment",
           entityId: comment.id,
@@ -155,7 +155,7 @@ const like = async (comment) => {
       comment.likeCount = comment.likeCount > 0 ? comment.likeCount - 1 : 0;
     } else {
       await useHttpPost(
-        "/api/like/like",
+        "/bbsapi/like/like",
         useJsonToForm({
           entityType: "comment",
           entityId: comment.id,
@@ -208,7 +208,7 @@ const hideReply = (comment) => {
 const submitReply = async (parent) => {
   try {
     const ret = await useHttpPost(
-      "/api/comment/create",
+      "/bbsapi/comment/create",
       useJsonToForm({
         entityType: "comment",
         entityId: parent.id,

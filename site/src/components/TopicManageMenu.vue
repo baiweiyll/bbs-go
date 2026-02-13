@@ -104,7 +104,7 @@ const handleCommand = async (command) => {
 const forbidden = async (days) => {
   try {
     await useHttpPost(
-      "/api/user/forbidden",
+      "/bbsapi/user/forbidden",
       useJsonToForm({
         userId: topic.value.user.id,
         days,
@@ -118,7 +118,7 @@ const forbidden = async (days) => {
 
 const deleteTopic = () => {
   useConfirm(t("component.topicManageMenu.confirmDelete")).then(function () {
-    useHttpPost(`/api/topic/delete/${topic.value.id}`)
+    useHttpPost(`/bbsapi/topic/delete/${topic.value.id}`)
       .then(() => {
         useMsg({
           message: t("component.topicManageMenu.deleteSuccess"),
@@ -144,7 +144,7 @@ const switchRecommend = () => {
   useConfirm(t("component.topicManageMenu.confirmAction", { action })).then(function () {
     const recommend = !topic.value.recommend;
     useHttpPost(
-      `/api/topic/recommend/${topic.value.id}`,
+      `/bbsapi/topic/recommend/${topic.value.id}`,
       useJsonToForm({
         recommend,
       })
@@ -169,7 +169,7 @@ const switchSticky = () => {
   useConfirm(t("component.topicManageMenu.confirmAction", { action })).then(function () {
     const sticky = !topic.value.sticky;
     useHttpPost(
-      `/api/topic/sticky/${topic.value.id}`,
+      `/bbsapi/topic/sticky/${topic.value.id}`,
       useJsonToForm({
         sticky,
       })

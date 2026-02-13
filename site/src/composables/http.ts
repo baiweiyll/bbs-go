@@ -40,6 +40,8 @@ export function useMyFetch<T = any>(url: string, options: HttpOptions = {}) {
 
   return useFetch(url, {
     ...options,
+    // 发送请求禁用 baseURL
+    baseURL: '',
     // 使用 transform 来处理响应数据
     transform: (response: ApiResponse<T> | null) => {
       if (!response) {
@@ -76,7 +78,7 @@ export function useHttp<T = any>(url: string, options: HttpOptions = {}): Promis
   options = applyOptions(options);
 
   return new Promise((resolve, reject) => {
-    $fetch(url, options as any)
+    $fetch(url, { baseURL: '', ...options })
       .then((resp: unknown) => {
         const apiResponse = resp as ApiResponse<T>;
         if (apiResponse.success) {

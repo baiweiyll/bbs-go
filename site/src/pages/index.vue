@@ -6,7 +6,7 @@
           <topics-nav />
         </div>
         <div class="topics-main">
-          <load-more-async v-slot="{ results }" url="/api/topic/topics">
+          <load-more-async v-slot="{ results }" url="/bbsapi/topic/topics">
             <topic-list :topics="results" show-sticky />
           </load-more-async>
         </div>

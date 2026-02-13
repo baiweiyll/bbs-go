@@ -63,7 +63,7 @@ async function handleCommand(command) {
 async function forbidden(days) {
   try {
     await useHttpPost(
-      "/api/user/forbidden",
+      "/bbsapi/user/forbidden",
       useJsonToForm({
         userId: props.article.user.id,
         days,
@@ -76,7 +76,7 @@ async function forbidden(days) {
 }
 function deleteArticle() {
   useConfirm(t("component.articleManageMenu.confirmDelete")).then(function () {
-    useHttpPost(`/api/article/delete/${props.article.id}`)
+    useHttpPost(`/bbsapi/article/delete/${props.article.id}`)
       .then(() => {
         useMsg({
           message: t("component.articleManageMenu.deleteSuccess"),

@@ -531,7 +531,7 @@ const installStatus = ref({
   type: "is-info",
 });
 
-const { data: status } = await useMyFetch(`/api/install/status`);
+const { data: status } = await useMyFetch(`/bbsapi/install/status`);
 
 if (status.value.installed) {
   const router = useRouter();
@@ -548,7 +548,7 @@ const gotoStep = async (step) => {
     dbSuccess.value = "";
     testingConnection.value = true;
     try {
-      await useHttpPost("/api/install/test_db_connection", {
+      await useHttpPost("/bbsapi/install/test_db_connection", {
         host: dbConfig.value.host,
         port: dbConfig.value.port,
         database: dbConfig.value.database,
@@ -584,7 +584,7 @@ const testDbConnection = async () => {
   dbSuccess.value = "";
   testingConnection.value = true;
   try {
-    await useHttpPost("/api/install/test_db_connection", {
+    await useHttpPost("/bbsapi/install/test_db_connection", {
       host: dbConfig.value.host,
       port: dbConfig.value.port,
       database: dbConfig.value.database,
@@ -630,7 +630,7 @@ const confirmInstall = () => {
       installProgress.value += 5;
     }
   }, 500);
-  fetch("/api/install/install", {
+  fetch("/bbsapi/install/install", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

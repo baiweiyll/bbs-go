@@ -5,7 +5,7 @@
         <div class="articles-main">
           <load-more-async
             v-slot="{ results }"
-            url="/api/article/tag/articles"
+            url="/bbsapi/article/tag/articles"
             :params="{ tagId: tag.id }"
           >
             <article-list :articles="results" />
@@ -24,7 +24,7 @@
 
 <script setup>
 const route = useRoute();
-const { data: tag } = await useMyFetch(`/api/tag/${route.params.id}`);
+const { data: tag } = await useMyFetch(`/bbsapi/tag/${route.params.id}`);
 
 useHead({
   title: useSiteTitle(tag.value.name, "文章"),

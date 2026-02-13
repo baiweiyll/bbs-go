@@ -59,7 +59,7 @@ export function useToSignIn(redirect) {
     redirect = window.location.pathname;
   }
   // useLinkTo("/user/signin?redirect=" + encodeURIComponent(redirect));
-  window.location.href = "/oidc/login/signin?redirect=" + encodeURIComponent(redirect);
+  window.location.href = "/bbsoidc/login/signin?redirect=" + encodeURIComponent(redirect);
 }
 
 /**

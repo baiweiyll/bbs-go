@@ -50,7 +50,7 @@ const verifyEmail = async () => {
   const route = useRoute();
   try {
     const resp = await useHttpPost(
-      `/api/user/verify_email?token=${route.query.token}`
+      `/bbsapi/user/verify_email?token=${route.query.token}`
     );
     data.success = true;
     data.email = resp.email;

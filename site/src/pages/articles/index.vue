@@ -3,7 +3,7 @@
     <div class="container main-container left-main size-320">
       <div class="left-container">
         <div class="articles-main">
-          <load-more-async v-slot="{ results }" url="/api/article/articles">
+          <load-more-async v-slot="{ results }" url="/bbsapi/article/articles">
             <article-list :articles="results" />
           </load-more-async>
         </div>
