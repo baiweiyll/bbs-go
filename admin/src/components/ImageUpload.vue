@@ -68,7 +68,7 @@
   const file = ref();
   const action = computed(() => {
     const baseURL = useBaseURL();
-    return `${baseURL}/api/upload?userToken=${getToken()}`;
+    return `${baseURL}/bbsapi/upload?userToken=${getToken()}`;
   });
 
   const onChange = (_, currentFile) => {

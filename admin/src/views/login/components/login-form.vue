@@ -116,7 +116,7 @@
   }
 
   const refreshCaptcha = async () => {
-    const ret = await axios.get<any, User>('/api/captcha/request');
+    const ret = await axios.get<any, User>('/bbsapi/captcha/request');
     form.captchaId = ret.captchaId;
     form.captchaCode = '';
 
