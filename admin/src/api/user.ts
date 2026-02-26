@@ -35,19 +35,19 @@ export function login(data: LoginData) {
   formData.append('password', data.password);
   formData.append('captchaId', data.captchaId);
   formData.append('captchaCode', data.captchaCode);
-  return axios.postForm<LoginRes>('/api/login/signin', formData);
+  return axios.postForm<LoginRes>('/bbsapi/login/signin', formData);
 }
 
 export function logout() {
-  // axios.get('/api/login/signout');
+  // axios.get('/bbsapi/login/signout');
   if (typeof localStorage !== 'undefined') {
     localStorage.removeItem('userInfo');
   }
-  window.location.href = "/oidc/login/signout";
+  window.location.href = "/forum/admin/bbsoidc/login/signout";
 }
 
 export function getUserInfo(): Promise<UserState> {
-  return axios.get('/api/user/current');
+  return axios.get('/bbsapi/user/current');
 }
 
 export async function getMenuList() {
