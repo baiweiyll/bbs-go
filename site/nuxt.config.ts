@@ -101,6 +101,10 @@ export default defineNuxtConfig({
       '/admin/**': {
         proxy: `${serverURL}/admin/**`,
       },
+      // 支持 /forum/admin/** 路径（因为 baseURL 是 /forum/）
+      '/forum/admin/**': {
+        proxy: `${serverURL}/forum/admin/**`,
+      },
     },
   },
 
