@@ -46,8 +46,9 @@ func NewServer() {
 		}
 	})
 
-	// admin
+	// admin - 支持 /admin 和 /forum/admin 两个路径
 	app.HandleDir("/admin", "./admin")
+	app.HandleDir("/forum/admin", "./admin")
 	// site
 	app.HandleDir("/", "./site", iris.DirOptions{
 		ShowList:  false,
