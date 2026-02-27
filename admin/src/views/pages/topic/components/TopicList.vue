@@ -80,7 +80,7 @@
             <template v-if="topic.status === 0">
               <a-link
                 class="action-item"
-                :href="useSiteURL('/topic/' + topic.id)"
+                :href="useSiteURL('/forum/topic/' + topic.id)"
                 target="_blank"
                 >{{ $t('pages.topic.table.detail') }}</a-link
               >
@@ -130,7 +130,7 @@
             <template v-else-if="topic.status === 2">
               <a-link
                 class="action-item"
-                :href="useSiteURL('/topic/' + topic.id)"
+                :href="useSiteURL('/forum/topic/' + topic.id)"
                 target="_blank"
                 >{{ $t('pages.topic.table.detail') }}</a-link
               >
