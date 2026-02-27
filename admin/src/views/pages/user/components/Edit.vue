@@ -118,7 +118,7 @@
     config.title = '编辑';
 
     try {
-      form.value = await axios.get(`/api/admin/user/${id}`);
+      form.value = await axios.get(`/bbsapi/admin/user/${id}`);
       await loadRoles();
     } catch (e: any) {
       useHandleError(e);
@@ -128,7 +128,7 @@
   };
 
   const loadRoles = async () => {
-    roles.value = await axios.get('/api/admin/role/roles');
+    roles.value = await axios.get('/bbsapi/admin/role/roles');
   };
 
   const handleCancel = () => {
@@ -142,8 +142,8 @@
     }
     try {
       const url = config.isCreate
-        ? '/api/admin/user/create'
-        : '/api/admin/user/update';
+        ? '/bbsapi/admin/user/create'
+        : '/bbsapi/admin/user/update';
       await axios.postForm<any>(url, jsonToFormData(form.value));
       useNotificationSuccess('提交成功');
       emit('ok');

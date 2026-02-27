@@ -87,7 +87,7 @@
   const saveRoleMenus = async () => {
     try {
       await axios.postForm(
-        '/api/admin/role/save_role_menus',
+        '/bbsapi/admin/role/save_role_menus',
         jsonToFormData({
           roleId: currentRoleId.value,
           menuIds: checkedMenuIds.value ? checkedMenuIds.value.join(',') : '',
@@ -101,13 +101,13 @@
   };
 
   const getRoles = async () => {
-    roles.value = await axios.get('/api/admin/role/all_roles');
+    roles.value = await axios.get('/bbsapi/admin/role/all_roles');
   };
 
   const getMenus = async () => {
     try {
       loading.value = true;
-      menus.value = await axios.get(`/api/admin/menu/tree`);
+      menus.value = await axios.get(`/bbsapi/admin/menu/tree`);
     } finally {
       loading.value = false;
     }
@@ -115,7 +115,7 @@
 
   const getRoleMenusIds = async () => {
     checkedMenuIds.value = await axios.get(
-      `/api/admin/role/role_menu_ids?roleId=${currentRoleId.value}`
+      `/bbsapi/admin/role/role_menu_ids?roleId=${currentRoleId.value}`
     );
   };
 </script>

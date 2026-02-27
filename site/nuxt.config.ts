@@ -98,13 +98,12 @@ export default defineNuxtConfig({
       '/bbsapi/**': {
         proxy: `${serverURL}/bbsapi/**`,
       },
-      '/admin/**': {
-        proxy: `${serverURL}/admin/**`,
-      },
-      // 支持 /forum/admin/** 路径（因为 baseURL 是 /forum/）
-      '/forum/admin/**': {
-        proxy: `${serverURL}/forum/admin/**`,
-      },
+      // admin 代理：baseURL 为 /forum/ 时，访问 /forum/admin/ 在 Nitro 内可能被规范为 /admin/
+      // 因此同时配置两种路径，并代理到 Go 的 /forum/admin（admin 前端 build 的 base 是 /forum/admin/）
+      // '/forum/admin': { proxy: `${serverURL}/forum/admin` },
+      // '/forum/admin/**': { proxy: `${serverURL}/forum/admin/**` },
+      '/admin': { proxy: `${serverURL}/forum/admin` },
+      '/admin/**': { proxy: `${serverURL}/forum/admin/**` },
     },
   },
 

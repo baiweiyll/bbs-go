@@ -67,7 +67,7 @@
     config.title = t('pages.link.editTitle');
 
     try {
-      form.value = await axios.get(`/api/admin/link/${id}`);
+      form.value = await axios.get(`/bbsapi/admin/link/${id}`);
     } catch (e: any) {
       useHandleError(e);
     }
@@ -86,8 +86,8 @@
     }
     try {
       const url = config.isCreate
-        ? '/api/admin/link/create'
-        : '/api/admin/link/update';
+        ? '/bbsapi/admin/link/create'
+        : '/bbsapi/admin/link/update';
       await axios.postForm<any>(url, jsonToFormData(form.value));
       useNotificationSuccess(t('pages.link.submitSuccess'));
       emit('ok');

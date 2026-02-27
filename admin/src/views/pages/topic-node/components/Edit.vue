@@ -84,7 +84,7 @@
     config.title = '编辑';
 
     try {
-      form.value = await axios.get(`/api/admin/topic-node/${id}`);
+      form.value = await axios.get(`/bbsapi/admin/topic-node/${id}`);
     } catch (e: any) {
       useHandleError(e);
     }
@@ -103,8 +103,8 @@
     }
     try {
       const url = config.isCreate
-        ? '/api/admin/topic-node/create'
-        : '/api/admin/topic-node/update';
+        ? '/bbsapi/admin/topic-node/create'
+        : '/bbsapi/admin/topic-node/update';
       await axios.postForm<any>(url, jsonToFormData(form.value));
       useNotificationSuccess(t('pages.topicNode.modal.submitSuccess'));
       emit('ok');

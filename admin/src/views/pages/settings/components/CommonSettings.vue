@@ -134,7 +134,7 @@
   const nodes = ref<NodeDTO[]>([]);
 
   const loadConfig = async () => {
-    const ret = await axios.get<any, any>('/api/admin/sys-config/configs');
+    const ret = await axios.get<any, any>('/bbsapi/admin/sys-config/configs');
     config.siteTitle = ret.siteTitle;
     config.siteLogo = ret.siteLogo;
     config.siteDescription = ret.siteDescription;
@@ -146,7 +146,7 @@
     config.enableHideContent = ret.enableHideContent;
     config.modules = ret.modules;
     nodes.value = await axios.get<any, NodeDTO[]>(
-      '/api/admin/topic-node/nodes'
+      '/bbsapi/admin/topic-node/nodes'
     );
   };
 
@@ -155,7 +155,7 @@
   const submit = async () => {
     loading.value = true;
     try {
-      await axios.post('/api/admin/sys-config/save', config);
+      await axios.post('/bbsapi/admin/sys-config/save', config);
       await loadConfig();
       useNotificationSuccess(t('pages.settings.common.message.submitSuccess'));
     } catch (e) {

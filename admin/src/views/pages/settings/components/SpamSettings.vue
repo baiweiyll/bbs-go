@@ -93,7 +93,7 @@
     emailWhitelist: undefined,
   });
   const loadConfig = async () => {
-    const ret = await axios.get<any, any>('/api/admin/sys-config/configs');
+    const ret = await axios.get<any, any>('/bbsapi/admin/sys-config/configs');
     config.topicCaptcha = ret.topicCaptcha;
     config.createTopicEmailVerified = ret.createTopicEmailVerified;
     config.createArticleEmailVerified = ret.createArticleEmailVerified;
@@ -108,7 +108,7 @@
   const submit = async () => {
     loading.value = true;
     try {
-      await axios.post('/api/admin/sys-config/save', config);
+      await axios.post('/bbsapi/admin/sys-config/save', config);
       await loadConfig();
       useNotificationSuccess(t('pages.settings.spam.message.submitSuccess'));
     } catch (e) {
