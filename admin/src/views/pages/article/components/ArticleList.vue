@@ -5,7 +5,7 @@
         <div class="article-header">
           <a
             class="article-title"
-            :href="useSiteURL(`/article/${item.id}`)"
+            :href="useSiteURL(`/forum/article/${item.id}`)"
             target="_blank"
             >{{ item.title }}</a
           >
@@ -29,7 +29,7 @@
             <div class="article-meta">
               <div class="article-meta-left">
                 <a
-                  :href="useSiteURL(`/user/${item.user.id}`)"
+                  :href="useSiteURL(`/forum/user/${item.user.id}`)"
                   class="article-meta-item"
                   target="_blank"
                 >
