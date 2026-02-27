@@ -38,7 +38,7 @@ func NewServer() {
 	app.OnAnyErrorCode(func(ctx iris.Context) {
 		path := ctx.Path()
 		var err error
-		if strings.Contains(path, "/api/admin/") {
+		if strings.Contains(path, "/bbsapi/admin/") {
 			err = ctx.JSON(web.JsonErrorCode(ctx.GetStatusCode(), "Http error"))
 		}
 		if err != nil {
