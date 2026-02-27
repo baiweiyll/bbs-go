@@ -69,7 +69,7 @@
   ];
 
   const loadConfig = async () => {
-    const ret = await axios.get<any, any>('/api/admin/sys-config/configs');
+    const ret = await axios.get<any, any>('/bbsapi/admin/sys-config/configs');
     data.value = ret.siteNavs as NavDTO[];
   };
 
@@ -98,7 +98,7 @@
         useNotificationError(t('pages.settings.nav.message.validation'));
         return;
       }
-      await axios.post('/api/admin/sys-config/save', {
+      await axios.post('/bbsapi/admin/sys-config/save', {
         siteNavs: data.value,
       });
       await loadConfig();

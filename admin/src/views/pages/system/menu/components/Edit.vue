@@ -185,7 +185,7 @@
 
   const menus = ref([]);
   const loadMenus = async () => {
-    menus.value = await axios.get('/api/admin/menu/tree');
+    menus.value = await axios.get('/bbsapi/admin/menu/tree');
   };
 
   const show = async () => {
@@ -210,7 +210,7 @@
     await loadMenus();
 
     try {
-      form.value = await axios.get(`/api/admin/menu/${id}`);
+      form.value = await axios.get(`/bbsapi/admin/menu/${id}`);
     } catch (e) {
       useHandleError(e);
     }
@@ -230,8 +230,8 @@
     }
     try {
       const url = config.isCreate
-        ? '/api/admin/menu/create'
-        : '/api/admin/menu/update';
+        ? '/bbsapi/admin/menu/create'
+        : '/bbsapi/admin/menu/update';
       (await axios.postForm) < any > (url, jsonToFormData(form.value));
       useNotificationSuccess(t('pages.menu.submitSuccess'));
       emit('ok');
@@ -291,7 +291,7 @@
     form.value.apis?.splice(rowIndex, 1);
   };
   const showApiDialog = async () => {
-    apis.value = await axios.get('/api/admin/api/list_all');
+    apis.value = await axios.get('/bbsapi/admin/api/list_all');
     apiDialogVisible.value = true;
   };
 

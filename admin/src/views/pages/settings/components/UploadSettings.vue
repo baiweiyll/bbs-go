@@ -141,7 +141,7 @@ const loading = ref(false);
 const config = ref(null);
 
 const loadConfig = async () => {
-  const ret = await axios.get('/api/admin/sys-config/configs');
+  const ret = await axios.get('/bbsapi/admin/sys-config/configs');
   config.value = ret.uploadConfig || {
     enableUploadMethod: 'AliyunOss',
     aliyunOss: {
@@ -180,7 +180,7 @@ loadConfig();
 const submit = async () => {
   loading.value = true;
   try {
-    await axios.post('/api/admin/sys-config/save', {
+    await axios.post('/bbsapi/admin/sys-config/save', {
       uploadConfig: config.value,
     });
     await loadConfig();

@@ -112,7 +112,7 @@
   const deleteSubmit = async (row) => {
     try {
       await axios.form(
-        '/api/admin/article/delete',
+        '/bbsapi/admin/article/delete',
         jsonToFormData({ id: row.id })
       );
       useNotificationSuccess(t('pages.article.deleteSuccess'));
@@ -124,7 +124,7 @@
   const auditSubmit = async (row) => {
     try {
       await axios.form(
-        '/api/admin/article/audit',
+        '/bbsapi/admin/article/audit',
         jsonToFormData({ id: row.id })
       );
       useNotificationSuccess(t('pages.article.auditSuccess'));

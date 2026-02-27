@@ -51,9 +51,9 @@ export function getUserInfo(): Promise<UserState> {
 }
 
 export async function getMenuList() {
-  // const ret = await axios.get<any, MenuItem[]>('/api/admin/menu/user_menus');
+  // const ret = await axios.get<any, MenuItem[]>('/bbsapi/admin/menu/user_menus');
   // return convertMenus(ret);
-  const ret = await axios.get<any, MenuItem[]>('/api/admin/menu/user_menus');
+  const ret = await axios.get<any, MenuItem[]>('/bbsapi/admin/menu/user_menus');
   return ret;
 }
 

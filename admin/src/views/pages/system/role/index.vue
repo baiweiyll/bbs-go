@@ -165,7 +165,7 @@
     loading.value = true;
     try {
       const ret = await axios.postForm<any>(
-        '/api/admin/role/list',
+        '/bbsapi/admin/role/list',
         jsonToFormData(filters)
       );
       data.page = ret.page;
@@ -192,7 +192,7 @@
       ids.push(element.id);
     });
 
-    await axios.post('/api/admin/role/update_sort', ids);
+    await axios.post('/bbsapi/admin/role/update_sort', ids);
     await list();
   };
 

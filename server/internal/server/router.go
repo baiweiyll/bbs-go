@@ -47,7 +47,7 @@ func NewServer() {
 	})
 
 	// admin - 支持 /admin 和 /forum/admin 两个路径
-	app.HandleDir("/admin", "./admin")
+	// app.HandleDir("/admin", "./admin")
 	app.HandleDir("/forum/admin", "./admin")
 	// site
 	app.HandleDir("/", "./site", iris.DirOptions{
@@ -58,7 +58,7 @@ func NewServer() {
 	})
 
 	// api
-	mvc.Configure(app.Party("/api"), func(m *mvc.Application) {
+	mvc.Configure(app.Party("/bbsapi"), func(m *mvc.Application) {
 		m.Router.Use(middleware.Install)
 		m.Party("/topic").Handle(new(api.TopicController))
 		m.Party("/article").Handle(new(api.ArticleController))
@@ -79,13 +79,13 @@ func NewServer() {
 		m.Party("/install").Handle(new(api.InstallController))
 	})
 
-	mvc.Configure(app.Party("/oidc"), func(m *mvc.Application) {
+	mvc.Configure(app.Party("/bbsoidc"), func(m *mvc.Application) {
 		m.Router.Use(middleware.Install)
 		m.Party("/login").Handle(new(api.OIDCController))
 	})
 
 	// admin
-	mvc.Configure(app.Party("/api/admin"), func(m *mvc.Application) {
+	mvc.Configure(app.Party("/bbsapi/admin"), func(m *mvc.Application) {
 		m.Router.Use(middleware.Install)
 		m.Router.Use(middleware.AdminAuth)
 		m.Party("/role").Handle(new(admin.RoleController))

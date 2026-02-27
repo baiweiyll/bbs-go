@@ -179,7 +179,7 @@
   const deleteSubmit = async (topicId) => {
     try {
       await axios.form(
-        '/api/admin/topic/delete',
+        '/bbsapi/admin/topic/delete',
         jsonToFormData({ id: topicId })
       );
       useNotificationSuccess(t('pages.topic.notify.deleteSuccess'));
@@ -191,7 +191,7 @@
   const undeleteSubmit = async (topicId) => {
     try {
       await axios.form(
-        '/api/admin/topic/undelete',
+        '/bbsapi/admin/topic/undelete',
         jsonToFormData({ id: topicId })
       );
       useNotificationSuccess(t('pages.topic.notify.undeleteSuccess'));
@@ -203,7 +203,7 @@
   const recommend = async (topicId) => {
     try {
       await axios.form(
-        '/api/admin/topic/recommend',
+        '/bbsapi/admin/topic/recommend',
         jsonToFormData({ id: topicId })
       );
       useNotificationSuccess(t('pages.topic.notify.recommendSuccess'));
@@ -214,7 +214,7 @@
   };
   const cancelRecommend = async (topicId) => {
     try {
-      await axios.delete(`/api/admin/topic/recommend?id=${topicId}`);
+      await axios.delete(`/bbsapi/admin/topic/recommend?id=${topicId}`);
       useNotificationSuccess(t('pages.topic.notify.cancelRecommendSuccess'));
       emits('change');
     } catch (e) {
@@ -224,7 +224,7 @@
   const auditSubmit = async (topicId) => {
     try {
       await axios.form(
-        '/api/admin/topic/audit',
+        '/bbsapi/admin/topic/audit',
         jsonToFormData({ id: topicId })
       );
       useNotificationSuccess(t('pages.topic.notify.auditSuccess'));

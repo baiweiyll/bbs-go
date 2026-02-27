@@ -67,7 +67,7 @@
     config.title = t('pages.dictType.edit');
 
     try {
-      form.value = await axios.get(`/api/admin/dict-type/${id}`);
+      form.value = await axios.get(`/bbsapi/admin/dict-type/${id}`);
     } catch (e: any) {
       useHandleError(e);
     }
@@ -86,8 +86,8 @@
     }
     try {
       const url = config.isCreate
-        ? '/api/admin/dict-type/create'
-        : '/api/admin/dict-type/update';
+        ? '/bbsapi/admin/dict-type/create'
+        : '/bbsapi/admin/dict-type/update';
       await axios.postForm<any>(url, jsonToFormData(form.value));
       useNotificationSuccess(t('pages.dictType.submitSuccess'));
       emit('ok');

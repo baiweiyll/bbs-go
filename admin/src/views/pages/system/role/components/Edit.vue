@@ -69,7 +69,7 @@
     config.title = t('pages.role.editTitle');
 
     try {
-      form.value = await axios.get(`/api/admin/role/${id}`);
+      form.value = await axios.get(`/bbsapi/admin/role/${id}`);
     } catch (e: any) {
       useHandleError(e);
     }
@@ -88,8 +88,8 @@
     }
     try {
       const url = config.isCreate
-        ? '/api/admin/role/create'
-        : '/api/admin/role/update';
+        ? '/bbsapi/admin/role/create'
+        : '/bbsapi/admin/role/update';
       await axios.postForm<any>(url, jsonToFormData(form.value));
       useNotificationSuccess(t('role.submitSuccess'));
       emit('ok');

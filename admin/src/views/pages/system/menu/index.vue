@@ -123,7 +123,7 @@
     loading.value = true;
     try {
       data.results = await axios.postForm<any>(
-        '/api/admin/menu/list',
+        '/bbsapi/admin/menu/list',
         jsonToFormData(filters)
       );
     } finally {
@@ -156,7 +156,7 @@
       });
     }
 
-    await axios.post('/api/admin/menu/update_sort', ids);
+    await axios.post('/bbsapi/admin/menu/update_sort', ids);
     await list();
   };
 </script>
