@@ -43,7 +43,7 @@ export function logout() {
   if (typeof localStorage !== 'undefined') {
     localStorage.removeItem('userInfo');
   }
-  window.location.href = "/forum/admin/bbsoidc/login/signout";
+  window.location.href = "/bbsoidc/login/signout";
 }
 
 export function getUserInfo(): Promise<UserState> {
