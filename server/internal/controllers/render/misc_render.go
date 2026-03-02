@@ -101,7 +101,12 @@ func BuildLoginSuccess(ctx iris.Context, user *models.User, redirect string) *we
 	if err != nil {
 		return web.JsonError(err)
 	}
-	ctx.SetCookieKV(constants.CookieTokenKey, token, context.CookieHTTPOnly(true), context.CookieExpires(365*24*time.Hour))
+	ctx.SetCookieKV(
+		constants.CookieTokenKey,
+		token,
+		context.CookieHTTPOnly(true),
+		context.CookieExpires(365*24*time.Hour),
+	)
 	return web.NewEmptyRspBuilder().
 		Put("token", token).
 		Put("user", BuildUserProfile(user)).

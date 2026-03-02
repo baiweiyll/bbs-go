@@ -45,7 +45,6 @@ func NewServer() {
 			slog.Error(err.Error(), slog.Any("err", err))
 		}
 	})
-
 	// admin
 	app.HandleDir("/admin", "./admin")
 	// site

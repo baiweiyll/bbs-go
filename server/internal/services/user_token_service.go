@@ -64,7 +64,7 @@ func (s *userTokenService) CheckLogin(ctx iris.Context) (*models.User, error) {
 }
 
 func (s *userTokenService) Signout(ctx iris.Context) error {
-	config := config.Instance.OIDC
+	conf := config.Instance.OIDC
 	token := s.GetUserToken(ctx)
 	slog.Info("Signout", slog.Any("Token", token))
 	userToken := repositories.UserTokenRepository.GetByToken(sqls.DB(), token)
@@ -75,7 +75,8 @@ func (s *userTokenService) Signout(ctx iris.Context) error {
 	if err != nil {
 		return err
 	}
-	ctx.RemoveCookie(constants.CookieTokenKey, context.CookieDomain(config.Domain))
+	ctx.RemoveCookie(constants.CookieTokenKey)
+	ctx.RemoveCookie(constants.CookieTokenKey, context.CookieDomain(conf.Domain))
 	return nil
 }
 
