@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-const { data: scoreRank } = await useMyFetch("/api/user/score/rank");
+const { data: scoreRank } = await useMyFetch("/bbsapi/user/score/rank");
 </script>
 
 <style scoped lang="scss">

@@ -130,15 +130,15 @@ const user = computed(() => {
 });
 
 const { data: checkIn, refresh: refreshCheckIn } = await useMyFetch(
-  `/api/checkin/checkin`
+  `/bbsapi/checkin/checkin`
 );
 const { data: checkInRank, refresh: refreshCheckInRank } = await useMyFetch(
-  `/api/checkin/rank`
+  `/bbsapi/checkin/rank`
 );
 
 async function doCheckIn() {
   try {
-    checkIn.value = await useHttpPost("/api/checkin/checkin");
+    checkIn.value = await useHttpPost("/bbsapi/checkin/checkin");
     useMsgSuccess(t("component.checkIn.checkInSuccess"));
     refreshCheckIn();
     refreshCheckInRank();

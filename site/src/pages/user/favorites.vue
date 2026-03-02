@@ -8,7 +8,7 @@
     </div>
 
     <div class="widget-content">
-      <load-more-async v-slot="{ results }" url="/api/user/favorites">
+      <load-more-async v-slot="{ results }" url="/bbsapi/user/favorites">
         <ul v-if="results && results.length" class="favorite-list">
           <li
             v-for="item in results"
@@ -22,7 +22,7 @@
             </div>
             <div v-else>
               <div class="favorite-title">
-                <a :href="item.url" target="_blank">{{ item.title }}</a>
+                <a :href="ensureForumPath(item.url)" target="_blank">{{ item.title }}</a>
               </div>
               <div class="favorite-summary">
                 {{ item.content }}
@@ -52,6 +52,7 @@ definePageMeta({
 });
 
 const { t } = useI18n();
+const ensureForumPath = useEnsureForumPath;
 
 useHead({
   title: useSiteTitle(t("user.favorites.title")),

@@ -12,14 +12,14 @@ import (
 
 var (
 	authCfg = []PathRole{
-		{Pattern: "/api/admin/sys-config/**", Roles: []string{constants.RoleOwner}},
-		{Pattern: "/api/admin/user/create", Roles: []string{constants.RoleOwner}},
-		{Pattern: "/api/admin/user/update", Roles: []string{constants.RoleOwner}},
-		{Pattern: "/api/admin/topic-node/create", Roles: []string{constants.RoleOwner}},
-		{Pattern: "/api/admin/topic-node/update", Roles: []string{constants.RoleOwner}},
-		{Pattern: "/api/admin/tag/create", Roles: []string{constants.RoleOwner}},
-		{Pattern: "/api/admin/tag/update", Roles: []string{constants.RoleOwner}},
-		{Pattern: "/api/admin/**", Roles: []string{constants.RoleOwner, constants.RoleAdmin}},
+		{Pattern: "/bbsapi/admin/sys-config/**", Roles: []string{constants.RoleOwner}},
+		{Pattern: "/bbsapi/admin/user/create", Roles: []string{constants.RoleOwner}},
+		{Pattern: "/bbsapi/admin/user/update", Roles: []string{constants.RoleOwner}},
+		{Pattern: "/bbsapi/admin/topic-node/create", Roles: []string{constants.RoleOwner}},
+		{Pattern: "/bbsapi/admin/topic-node/update", Roles: []string{constants.RoleOwner}},
+		{Pattern: "/bbsapi/admin/tag/create", Roles: []string{constants.RoleOwner}},
+		{Pattern: "/bbsapi/admin/tag/update", Roles: []string{constants.RoleOwner}},
+		{Pattern: "/bbsapi/admin/**", Roles: []string{constants.RoleOwner, constants.RoleAdmin}},
 	}
 	antPathMatcher = urls.NewAntPathMatcher()
 )

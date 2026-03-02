@@ -193,7 +193,7 @@ export default {
         loadMore: "查看更多回复",
       },
       SideActionBar: {
-        liked: "已点在",
+        liked: "已点赞",
         uliked: "已取消点赞",
         favoriteSuccess: "收藏成功",
         ufavoriteSuccess:"已取消收藏",

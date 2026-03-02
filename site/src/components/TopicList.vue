@@ -5,7 +5,7 @@
         <div class="topic-header-main">
           <my-avatar :user="topic.user" />
           <div class="topic-userinfo">
-            <a :href="`/user/${topic.user.id}`" class="topic-nickname">
+            <a :href="`/forum/user/${topic.user.id}`" class="topic-nickname">
               {{ topic.user.nickname }}
             </a>
             <div class="topic-time">
@@ -122,7 +122,7 @@ const like = async (topic) => {
   try {
     if (topic.liked) {
       await useHttpPost(
-        "/api/like/unlike",
+        "/bbsapi/like/unlike",
         useJsonToForm({
           entityType: "topic",
           entityId: topic.id,
@@ -133,7 +133,7 @@ const like = async (topic) => {
       useMsgSuccess(t("component.topicList.unlikeSuccess"));
     } else {
       await useHttpPost(
-        "/api/like/like",
+        "/bbsapi/like/like",
         useJsonToForm({
           entityType: "topic",
           entityId: topic.id,

@@ -69,7 +69,7 @@
     config.title = t('pages.forbiddenWord.editTitle');
 
     try {
-      form.value = await axios.get(`/api/admin/forbidden-word/${id}`);
+      form.value = await axios.get(`/bbsapi/admin/forbidden-word/${id}`);
     } catch (e: any) {
       useHandleError(e);
     }
@@ -88,8 +88,8 @@
     }
     try {
       const url = config.isCreate
-        ? '/api/admin/forbidden-word/create'
-        : '/api/admin/forbidden-word/update';
+        ? '/bbsapi/admin/forbidden-word/create'
+        : '/bbsapi/admin/forbidden-word/update';
       await axios.postForm<any>(url, jsonToFormData(form.value));
       useNotificationSuccess('提交成功');
       useNotificationSuccess(t('forbiddenWord.submitSuccess'));

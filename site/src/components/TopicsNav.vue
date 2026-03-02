@@ -26,7 +26,7 @@ import iconNode from "~/assets/images/node.png";
 
 const envStore = useEnvStore();
 
-const { data: nodes } = await useMyFetch("/api/topic/node_navs");
+const { data: nodes } = await useMyFetch("/bbsapi/topic/node_navs");
 
 const nodeLogo = (node) => {
   if (node.logo) {

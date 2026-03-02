@@ -65,7 +65,7 @@
 <script setup lang="ts">
   const systemInfo = ref();
   const load = async () => {
-    systemInfo.value = await axios.get('/api/admin/common/system_info');
+    systemInfo.value = await axios.get('/bbsapi/admin/common/system_info');
   };
   load();
 </script>

@@ -24,7 +24,7 @@ const useDictStore = defineStore('dict', {
       this.dictsLoading = true;
       try {
         this.dicts = await axios.get(
-          `/api/admin/dict/list?typeId=${this.currentTypeId}`
+          `/bbsapi/admin/dict/list?typeId=${this.currentTypeId}`
         );
       } finally {
         this.dictsLoading = false;

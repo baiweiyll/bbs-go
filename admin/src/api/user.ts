@@ -35,25 +35,33 @@ export function login(data: LoginData) {
   formData.append('password', data.password);
   formData.append('captchaId', data.captchaId);
   formData.append('captchaCode', data.captchaCode);
-  return axios.postForm<LoginRes>('/api/login/signin', formData);
+  return axios.postForm<LoginRes>('/bbsapi/login/signin', formData);
 }
 
 export function logout() {
-  // axios.get('/api/login/signout');
+  // axios.get('/bbsapi/login/signout');
   if (typeof localStorage !== 'undefined') {
     localStorage.removeItem('userInfo');
   }
-  window.location.href = "/oidc/login/signout";
+  window.location.href = "/bbsoidc/login/signout";
 }
 
-export function getUserInfo(): Promise<UserState> {
-  return axios.get('/api/user/current');
+export async function getUserInfo(): Promise<UserState | null> {
+  const res = await axios.get<UserState | null>('/bbsapi/user/current');
+  // 后端返回 data: null 时清空 localStorage
+  if (res === null || res === undefined) {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem('userInfo');
+    }
+    return null;
+  }
+  return res;
 }
 
 export async function getMenuList() {
-  // const ret = await axios.get<any, MenuItem[]>('/api/admin/menu/user_menus');
+  // const ret = await axios.get<any, MenuItem[]>('/bbsapi/admin/menu/user_menus');
   // return convertMenus(ret);
-  const ret = await axios.get<any, MenuItem[]>('/api/admin/menu/user_menus');
+  const ret = await axios.get<any, MenuItem[]>('/bbsapi/admin/menu/user_menus');
   return ret;
 }
 

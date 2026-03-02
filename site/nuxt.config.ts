@@ -1,7 +1,7 @@
 const ssr = process.env.NUXT_SSR === 'false' ? false : true
 const serverURL = import.meta.env.SERVER_URL || 'http://localhost:8082'
 
-// https://nuxt.com/docs/api/configuration/nuxt-config
+// https://nuxt.com/docs/bbsapi/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
   srcDir: 'src/',
@@ -65,6 +65,7 @@ export default defineNuxtConfig({
   },
 
   app: {
+    baseURL: '/forum/',
     head: {
       title: 'BBS-GO',
       htmlAttrs: { class: 'theme-light has-navbar-fixed-top' },
@@ -85,21 +86,24 @@ export default defineNuxtConfig({
   nitro: {
     routeRules: {
       // OIDC 登录接口代理，配置不跟随302重定向
-      '/oidc/**': {
+      '/bbsoidc/**': {
         proxy: {
-          to: `${serverURL}/oidc/**`,
+          to: `${serverURL}/bbsoidc/**`,
           fetchOptions: {
             // 关键配置：不跟随重定向，让浏览器处理302
             redirect: 'manual',
           },
         },
       },
-      '/api/**': {
-        proxy: `${serverURL}/api/**`,
+      '/bbsapi/**': {
+        proxy: `${serverURL}/bbsapi/**`,
       },
-      '/admin/**': {
-        proxy: `${serverURL}/admin/**`,
-      },
+      // admin 代理：baseURL 为 /forum/ 时，访问 /forum/admin/ 在 Nitro 内可能被规范为 /admin/
+      // 因此同时配置两种路径，并代理到 Go 的 /forum/admin（admin 前端 build 的 base 是 /forum/admin/）
+      // '/forum/admin': { proxy: `${serverURL}/forum/admin` },
+      // '/forum/admin/**': { proxy: `${serverURL}/forum/admin/**` },
+      '/admin': { proxy: `${serverURL}/forum/admin` },
+      '/admin/**': { proxy: `${serverURL}/forum/admin/**` },
     },
   },
 

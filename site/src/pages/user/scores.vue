@@ -2,7 +2,7 @@
   <div class="widget no-margin">
     <div class="widget-header">{{ $t("user.scores.title") }}</div>
     <div class="widget-content">
-      <load-more-async v-slot="{ results }" url="/api/user/score_logs">
+      <load-more-async v-slot="{ results }" url="/bbsapi/user/score_logs">
         <ul class="score-logs">
           <li
             v-for="scoreLog in results"

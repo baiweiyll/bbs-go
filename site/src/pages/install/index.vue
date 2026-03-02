@@ -372,10 +372,10 @@
       </div>
       <p>{{ $t("pages.install.complete.description") }}</p>
       <div class="has-text-centered mt-5">
-        <a href="/" class="button is-success mr-2">{{
+        <a href="/forum/" class="button is-success mr-2">{{
           $t("pages.install.complete.enterSite")
         }}</a>
-        <a href="/admin" class="button is-primary">{{
+        <a href="/forum/admin" class="button is-primary">{{
           $t("pages.install.complete.enterAdmin")
         }}</a>
       </div>
@@ -531,7 +531,7 @@ const installStatus = ref({
   type: "is-info",
 });
 
-const { data: status } = await useMyFetch(`/api/install/status`);
+const { data: status } = await useMyFetch(`/bbsapi/install/status`);
 
 if (status.value.installed) {
   const router = useRouter();
@@ -548,7 +548,7 @@ const gotoStep = async (step) => {
     dbSuccess.value = "";
     testingConnection.value = true;
     try {
-      await useHttpPost("/api/install/test_db_connection", {
+      await useHttpPost("/bbsapi/install/test_db_connection", {
         host: dbConfig.value.host,
         port: dbConfig.value.port,
         database: dbConfig.value.database,
@@ -584,7 +584,7 @@ const testDbConnection = async () => {
   dbSuccess.value = "";
   testingConnection.value = true;
   try {
-    await useHttpPost("/api/install/test_db_connection", {
+    await useHttpPost("/bbsapi/install/test_db_connection", {
       host: dbConfig.value.host,
       port: dbConfig.value.port,
       database: dbConfig.value.database,
@@ -630,7 +630,7 @@ const confirmInstall = () => {
       installProgress.value += 5;
     }
   }, 500);
-  fetch("/api/install/install", {
+  fetch("/bbsapi/install/install", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

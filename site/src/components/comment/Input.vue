@@ -56,7 +56,7 @@ async function create() {
   sending.value = true;
   try {
     const data = await useHttpPost(
-      "/api/comment/create",
+      "/bbsapi/comment/create",
       useJsonToForm({
         contentType: props.contentType,
         entityType: props.entityType,

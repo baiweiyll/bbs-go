@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-const { data: nodes } = await useMyFetch("/api/topic/nodes");
+const { data: nodes } = await useMyFetch("/bbsapi/topic/nodes");
 
 const route = useRoute();
 const router = useRouter();

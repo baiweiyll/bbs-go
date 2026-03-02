@@ -8,7 +8,7 @@
         <div class="topics-main">
           <load-more-async
             v-slot="{ results }"
-            url="/api/topic/tag/topics"
+            url="/bbsapi/topic/tag/topics"
             :params="{ tagId: tagId }"
           >
             <topic-list :topics="results" />
@@ -23,7 +23,7 @@
 const { t } = useI18n();
 const route = useRoute();
 const tagId = route.params.id;
-const { data: tag } = await useMyFetch(`/api/tag/${tagId}`);
+const { data: tag } = await useMyFetch(`/bbsapi/tag/${tagId}`);
 
 useHead({
   title: useSiteTitle(tag.value.name, t("pages.topics.title")),
