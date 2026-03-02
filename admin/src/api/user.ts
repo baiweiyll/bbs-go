@@ -47,7 +47,8 @@ export function logout() {
 }
 
 export async function getUserInfo(): Promise<UserState | null> {
-  const res = await axios.get<UserState | null>('/bbsapi/user/current');
+  // 响应拦截器已返回 res.data，故实际得到的是 UserState | null，需断言以匹配拦截器行为
+  const res = (await axios.get('/bbsapi/user/current')) as UserState | null;
   // 后端返回 data: null 时清空 localStorage
   if (res === null || res === undefined) {
     if (typeof localStorage !== 'undefined') {
