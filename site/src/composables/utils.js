@@ -54,6 +54,17 @@ export function useLinkTo(path) {
   router.push(path);
 }
 
+/**
+ * 为 API 返回的路径添加 /forum 前缀（site 项目 baseURL 为 /forum/）
+ * 外部链接（http/https）和已有 /forum 的路径原样返回
+ */
+export function useEnsureForumPath(url) {
+  if (!url) return "";
+  if (url.startsWith("http://") || url.startsWith("https://")) return url;
+  if (url.startsWith("/forum")) return url;
+  return "/forum" + (url.startsWith("/") ? url : "/" + url);
+}
+
 export function useToSignIn(redirect) {
   if (!redirect && import.meta.client) {
     redirect = window.location.pathname;

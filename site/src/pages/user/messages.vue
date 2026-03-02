@@ -48,7 +48,7 @@
                   v-if="message.detailUrl"
                   class="msg-attr message-show-more"
                 >
-                  <a :href="message.detailUrl" target="_blank">{{
+                  <a :href="ensureForumPath(message.detailUrl)" target="_blank">{{
                     $t("user.messages.viewDetails")
                   }}</a>
                 </div>
@@ -68,6 +68,7 @@ definePageMeta({
 });
 
 const { t } = useI18n();
+const ensureForumPath = useEnsureForumPath;
 
 useHead({
   title: useSiteTitle(t("user.messages.title")),

@@ -28,7 +28,9 @@ export const useUserStore = defineStore("user", {
     
     async fetchCurrent() {
       const { data } = await useMyFetch("/bbsapi/user/current");
-      this.user = data.value;
+      const userData = data.value;
+      // 后端返回 data: null 时清空 store 和 localStorage
+      this.setUser(userData || null);
       return this.user;
     },
     async signin(body) {
