@@ -5,7 +5,7 @@
     v-click-outside="onBlur"
     :class="{ 'input-focus': data.inputFocus, 'show-histories': showHistories }"
   >
-    <form action="/search" method="GET" class="search-input">
+    <form action="/search" method="GET" class="search-input" @submit.prevent="submitSearch">
       <input
         v-model="data.keyword"
         name="q"
@@ -90,12 +90,14 @@ const historyItemClick = (keyword) => {
   data.keyword = keyword;
   submitSearch();
 };
+const router = useRouter();
 const submitSearch = () => {
   if (!data.keyword) {
     return;
   }
   addHistories();
-  window.location = "/forum/search?q=" + encodeURIComponent(data.keyword);
+  // 使用路由跳转，自动带上 app.baseURL（/forum/ 或 /），避免部署环境不一致导致 /forum 被重定向丢失
+  router.push({ path: "/search", query: { q: data.keyword } });
 };
 const onFocus = () => {
   data.inputFocus = true;
