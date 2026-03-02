@@ -40,7 +40,11 @@ const useUserStore = defineStore('user', {
 
     // Get user's information
     async info(): Promise<UserState | null> {
-      const res: UserState = await getUserInfo();
+      const res = await getUserInfo();
+      if (res === null || res === undefined) {
+        this.resetInfo();
+        return null;
+      }
       this.setInfo(res);
       return res;
     },

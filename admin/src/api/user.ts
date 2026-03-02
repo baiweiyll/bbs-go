@@ -46,8 +46,16 @@ export function logout() {
   window.location.href = "/bbsoidc/login/signout";
 }
 
-export function getUserInfo(): Promise<UserState> {
-  return axios.get('/bbsapi/user/current');
+export async function getUserInfo(): Promise<UserState | null> {
+  const res = await axios.get<UserState | null>('/bbsapi/user/current');
+  // 后端返回 data: null 时清空 localStorage
+  if (res === null || res === undefined) {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem('userInfo');
+    }
+    return null;
+  }
+  return res;
 }
 
 export async function getMenuList() {

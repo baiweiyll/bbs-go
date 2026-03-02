@@ -372,10 +372,10 @@
       </div>
       <p>{{ $t("pages.install.complete.description") }}</p>
       <div class="has-text-centered mt-5">
-        <a href="/" class="button is-success mr-2">{{
+        <a href="/forum/" class="button is-success mr-2">{{
           $t("pages.install.complete.enterSite")
         }}</a>
-        <a href="/admin" class="button is-primary">{{
+        <a href="/forum/admin" class="button is-primary">{{
           $t("pages.install.complete.enterAdmin")
         }}</a>
       </div>
