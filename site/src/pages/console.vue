@@ -44,6 +44,14 @@ const processLoginCallback = () => {
     
     console.log('Console - User state set:', userStore.user);
 
+    // 解析token信息
+    const userToken = JSON.parse(decodedData)?.token || null
+
+    // 保存到 localStorage
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('userToken', userToken)
+    }
+
     // 使用 setTimeout 确保状态完全更新后再跳转
     setTimeout(() => {
       console.log('Console - About to navigate, user state:', userStore.user);
