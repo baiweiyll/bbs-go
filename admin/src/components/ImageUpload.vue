@@ -67,7 +67,8 @@
 
   const file = ref();
   const action = computed(() => {
-    const baseURL = useBaseURL();
+    // const baseURL = useBaseURL();
+    const baseURL = window.location.origin;
     return `${baseURL}/bbsapi/upload?userToken=${getToken()}`;
   });
 
