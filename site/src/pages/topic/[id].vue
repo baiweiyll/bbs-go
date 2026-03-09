@@ -56,6 +56,7 @@
               <div
                 class="topic-content-detail line-numbers"
                 v-html="topic.content"
+                @click="handleContentLinkClick"
               />
               <ul
                 v-if="topic.imageList && topic.imageList.length"
@@ -82,7 +83,11 @@
                       <span>&nbsp;{{ t('pages.topic.detail.hideContent') }}</span>
                     </span>
                   </div>
-                  <div class="widget-content" v-html="hideContent.content" />
+                  <div
+                    class="widget-content"
+                    v-html="hideContent.content"
+                    @click="handleContentLinkClick"
+                  />
                 </div>
                 <div v-else class="hide-content-tip">
                   <i class="iconfont icon-lock" />
@@ -218,6 +223,8 @@ useHead({
 const isPending = computed(() => {
   return topic.value?.status === 2;
 });
+
+const handleContentLinkClick = useContentLinkClickHandler();
 
 async function like() {
   try {

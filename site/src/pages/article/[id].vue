@@ -34,6 +34,7 @@
           <div
             class="article-content content line-numbers"
             v-html="article.content"
+            @click="handleContentLinkClick"
           ></div>
 
           <!--节点、标签-->
@@ -83,6 +84,8 @@ useHead({
 const isPending = computed(() => {
   return article.value.status === 2;
 });
+
+const handleContentLinkClick = useContentLinkClickHandler();
 </script>
 
 <style lang="scss" scoped>

@@ -232,7 +232,7 @@
       const url = config.isCreate
         ? '/bbsapi/admin/menu/create'
         : '/bbsapi/admin/menu/update';
-      (await axios.postForm) < any > (url, jsonToFormData(form.value));
+      await axios.postForm(url, jsonToFormData(form.value));
       useNotificationSuccess(t('pages.menu.submitSuccess'));
       emit('ok');
       done(true);

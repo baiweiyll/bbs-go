@@ -3,17 +3,23 @@
     <div class="container-header">
       <a-form :model="filters" layout="inline" :size="appStore.table.size">
         <a-form-item>
-          <a-input v-model="filters.id" :placeholder="$t('pages.article.id')" />
+          <a-input
+            v-model="filters.id"
+            allow-clear
+            :placeholder="$t('pages.article.id')"
+          />
         </a-form-item>
         <a-form-item>
           <a-input
             v-model="filters.userId"
+            allow-clear
             :placeholder="$t('pages.article.userId')"
           />
         </a-form-item>
         <a-form-item>
           <a-input
             v-model="filters.title"
+            allow-clear
             :placeholder="$t('pages.article.title')"
           />
         </a-form-item>
@@ -28,12 +34,6 @@
             <a-option :value="1" :label="$t('pages.article.statusDeleted')" />
             <a-option :value="2" :label="$t('pages.article.statusPending')" />
           </a-select>
-        </a-form-item>
-        <a-form-item>
-          <a-input
-            v-model="filters.title"
-            :placeholder="$t('pages.article.title')"
-          />
         </a-form-item>
         <a-form-item>
           <a-button type="primary" html-type="submit" @click="list">

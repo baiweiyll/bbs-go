@@ -374,6 +374,10 @@ export default {
     redirect: {
       link: "Click the link to continue >>",
       error: "The page you visited has an error!",
+      externalConfirm: "You are about to leave this site. Continue to the following link?",
+      externalConfirmUrl: "Link: ",
+      cancel: "Cancel",
+      continueVisit: "Continue",
     },
     install: {
       title: "BBS-GO Installation Guide",

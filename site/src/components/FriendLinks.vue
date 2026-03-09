@@ -16,6 +16,7 @@
             :title="link.title"
             class="link-title"
             target="_blank"
+            @click="handleLinkClick($event, link.url)"
             >{{ link.title }}</a
           >
           <p class="link-summary">
@@ -29,6 +30,7 @@
 
 <script setup>
 const { data: links } = await useMyFetch("/bbsapi/link/top_links");
+const handleLinkClick = useHandleExternalLinkClick();
 </script>
 
 <style scoped lang="scss">

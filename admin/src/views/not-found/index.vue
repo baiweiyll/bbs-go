@@ -13,8 +13,11 @@
 
   const router = useRouter();
   const back = () => {
-    // warning： Go to the node that has the permission
-    router.push(DEFAULT_ROUTE);
+    if (window.history.length > 1) {
+      router.back();
+    } else {
+      router.push(DEFAULT_ROUTE);
+    }
   };
 </script>
 
