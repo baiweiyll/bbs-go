@@ -45,7 +45,7 @@
                   {{ message.content }}
                 </div>
                 <div
-                  v-if="message.detailUrl"
+                  v-if="message.detailUrl && !isDeleteNotification(message.type)"
                   class="msg-attr message-show-more"
                 >
                   <a :href="ensureForumPath(message.detailUrl)" target="_blank">{{
@@ -69,6 +69,11 @@ definePageMeta({
 
 const { t } = useI18n();
 const ensureForumPath = useEnsureForumPath;
+
+// 删除类系统通知（如话题被删除、文章被删除）不显示「查看详情」，因内容已不存在
+const DELETE_NOTIFICATION_TYPES = [5]; // 5: 话题被删除
+const isDeleteNotification = (type) =>
+  type != null && DELETE_NOTIFICATION_TYPES.includes(Number(type));
 
 useHead({
   title: useSiteTitle(t("user.messages.title")),
