@@ -6,12 +6,13 @@
         <div class="widget-content">
           <ul v-if="links && links.length" class="links">
             <li v-for="link in links" :key="link.id" class="link">
-              <a
+              <span
                 :href="link.url"
                 :title="link.title"
                 class="link-title"
                 target="_blank"
-                >{{ link.title }}</a
+                @click="handleLinkClick($event, link.url)"
+                >{{ link.title }}</span
               >
               <p class="link-summary">
                 {{ link.summary }}
@@ -32,6 +33,7 @@ useHead({
 });
 
 const links = await useHttpGet("/bbsapi/link/list");
+const handleLinkClick = useHandleExternalLinkClick();
 </script>
 
 <style lang="scss" scoped>
@@ -47,6 +49,7 @@ const links = await useHttpGet("/bbsapi/link/list");
     }
 
     .link-title {
+      cursor: pointer;
       font-size: 15px;
       font-weight: 500;
       color: var(--text-link-color);

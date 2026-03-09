@@ -372,6 +372,10 @@ export default {
     redirect: {
       link: "点击该链接继续跳转 >>",
       error: "你访问的页面发生错误!",
+      externalConfirm: "即将离开本站前往以下链接，是否继续？",
+      externalConfirmUrl: "链接地址：",
+      cancel: "取消",
+      continueVisit: "继续访问",
     },
     install: {
       title: "BBS-GO 安装引导",
