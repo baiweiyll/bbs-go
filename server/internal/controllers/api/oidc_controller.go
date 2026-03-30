@@ -179,16 +179,17 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 		return nil
 	}
 	oidcClaims := &struct {
-		IDToken       string `json:"id_token,omitempty"`
-		Email         string `json:"email,omitempty"`
-		Name          string `json:"name,omitempty"`
-		Nickname      string `json:"nickname,omitempty"`
-		RefreshToken  string `json:"refresh_token,omitempty"`
-		UserID        string `json:"user_id,omitempty"`
-		Username      string `json:"username,omitempty"`
-		EmployeeNO    string `json:"employee_no,omitempty"`
-		EmailVerified bool   `json:"email_verified,omitempty"`
-		LoginType     string `json:"login_type"`
+		IDToken       string   `json:"id_token,omitempty"`
+		Email         string   `json:"email,omitempty"`
+		Name          string   `json:"name,omitempty"`
+		Nickname      string   `json:"nickname,omitempty"`
+		RefreshToken  string   `json:"refresh_token,omitempty"`
+		UserID        string   `json:"user_id,omitempty"`
+		Username      string   `json:"username,omitempty"`
+		EmployeeNO    string   `json:"employee_no,omitempty"`
+		EmailVerified bool     `json:"email_verified,omitempty"`
+		LoginType     string   `json:"login_type"`
+		Groups        []string `json:"groups,omitempty"`
 	}{}
 	if err := json.Unmarshal(buff.Bytes(), oidcClaims); err != nil {
 		slog.Error("OIDC parse error", slog.Any("error", err))
@@ -198,6 +199,11 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 	if oidcClaims.Email == "" {
 		slog.Error("OIDC email is required")
 		c.redirectWithError(conf.Console, c.Ctx, fmt.Errorf("email is required from OIDC provider"))
+		return nil
+	}
+	if oidcClaims.Groups == nil {
+		slog.Error("OIDC email is required")
+		c.redirectWithError(conf.Console, c.Ctx, fmt.Errorf("You do not have access permission"))
 		return nil
 	}
 	// 查找或创建用户
