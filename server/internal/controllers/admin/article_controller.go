@@ -41,7 +41,7 @@ func (c *ArticleController) AnyList() *web.JsonResult {
 	if userId > 0 {
 		params.Eq("user_id", userId)
 	}
-	params.EqByReq("status").EqByReq("title").PageByReq().Desc("id")
+	params.EqByReq("status").LikeByReq("title").PageByReq().Desc("id")
 
 	list, paging := services.ArticleService.FindPageByParams(params)
 	results := c.buildArticles(list)

@@ -52,6 +52,7 @@ func (c *OIDCController) GetSignin() *web.JsonResult {
 			"user_id",
 			"employee_no",
 			"login_type",
+			"groups",
 		},
 	}
 	state := strs.UUID()
