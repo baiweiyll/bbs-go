@@ -109,9 +109,9 @@ const isEnableHideContent = computed(() => {
   return configStore.config.enableHideContent;
 });
 
-const { data: nodes } = await useMyFetch("/api/topic/nodes");
+const { data: nodes } = await useMyFetch("/bbsapi/topic/nodes");
 const { data: postForm } = await useMyFetch(
-  `/api/topic/edit/${route.params.id}`
+  `/bbsapi/topic/edit/${route.params.id}`
 );
 const publishing = ref(false);
 
@@ -136,7 +136,7 @@ async function submitCreate() {
 
   try {
     useHttpPost(
-      `/api/topic/edit/${postForm.value.id}`,
+      `/bbsapi/topic/edit/${postForm.value.id}`,
       useJsonToForm({
         nodeId: postForm.value.nodeId,
         title: postForm.value.title,

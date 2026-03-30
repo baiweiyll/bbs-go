@@ -43,7 +43,7 @@
     checkInScore: undefined,
   });
   const loadConfig = async () => {
-    const ret = await axios.get<any, any>('/api/admin/sys-config/configs');
+    const ret = await axios.get<any, any>('/bbsapi/admin/sys-config/configs');
     config.postTopicScore = ret.scoreConfig.postTopicScore;
     config.postCommentScore = ret.scoreConfig.postCommentScore;
     config.checkInScore = ret.scoreConfig.checkInScore;
@@ -54,7 +54,7 @@
   const submit = async () => {
     loading.value = true;
     try {
-      await axios.post('/api/admin/sys-config/save', {
+      await axios.post('/bbsapi/admin/sys-config/save', {
         scoreConfig: config,
       });
       await loadConfig();

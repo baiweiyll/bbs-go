@@ -78,7 +78,7 @@ const forbidden = (days) => {
 const doForbidden = async (days) => {
   try {
     await useHttpPost(
-      "/api/user/forbidden",
+      "/bbsapi/user/forbidden",
       useJsonToForm({
         userId: localUser.value.id,
         days,
@@ -94,7 +94,7 @@ const doForbidden = async (days) => {
 const removeForbidden = async () => {
   try {
     await useHttpPost(
-      "/api/user/forbidden",
+      "/bbsapi/user/forbidden",
       useJsonToForm({
         userId: localUser.value.id,
         days: 0,

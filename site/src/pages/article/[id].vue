@@ -66,7 +66,7 @@
 const { t } = useI18n();
 const route = useRoute();
 const { data: article, error } = await useMyFetch(
-  `/api/article/${route.params.id}`
+  `/bbsapi/article/${route.params.id}`
 );
 
 if (error.value) {

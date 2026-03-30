@@ -148,7 +148,7 @@
       });
     }
 
-    await axios.post('/api/admin/dict/update_sort', ids);
+    await axios.post('/bbsapi/admin/dict/update_sort', ids);
     await dictStore.loadDicts();
   };
 </script>

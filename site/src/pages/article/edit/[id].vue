@@ -69,7 +69,7 @@ useHead({
 const route = useRoute();
 
 const { data: postForm } = await useMyFetch(
-  `/api/article/edit/${route.params.id}`
+  `/bbsapi/article/edit/${route.params.id}`
 );
 const publishing = ref(false);
 
@@ -81,7 +81,7 @@ async function submitCreate() {
 
   try {
     useHttpPost(
-      `/api/article/edit/${postForm.value.id}`,
+      `/bbsapi/article/edit/${postForm.value.id}`,
       useJsonToForm({
         title: postForm.value.title,
         content: postForm.value.content,

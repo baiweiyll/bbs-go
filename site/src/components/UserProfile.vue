@@ -79,11 +79,11 @@ async function uploadBackground(e) {
     const file = files[0];
     const formData = new FormData();
     formData.append("image", file, file.name);
-    const ret = await useHttpPost("/api/upload", formData);
+    const ret = await useHttpPost("/bbsapi/upload", formData);
 
     // 设置背景
     await useHttpPost(
-      "/api/user/set_background_image",
+      "/bbsapi/user/set_background_image",
       useJsonToForm({
         backgroundImage: ret.url,
       })

@@ -26,7 +26,7 @@ const props = defineProps({
 const emits = defineEmits(["onFollowed"]);
 
 const { data: followed } = await useMyFetch(
-  `/api/fans/is_followed?userId=${props.userId}`
+  `/bbsapi/fans/is_followed?userId=${props.userId}`
 );
 
 async function follow() {
@@ -37,7 +37,7 @@ async function follow() {
   try {
     if (followed.value) {
       await useHttpPost(
-        "/api/fans/unfollow",
+        "/bbsapi/fans/unfollow",
         useJsonToForm({
           userId: props.userId,
         })
@@ -46,7 +46,7 @@ async function follow() {
       emits("onFollowed", props.userId, false);
     } else {
       await useHttpPost(
-        "/api/fans/follow",
+        "/bbsapi/fans/follow",
         useJsonToForm({
           userId: props.userId,
         })

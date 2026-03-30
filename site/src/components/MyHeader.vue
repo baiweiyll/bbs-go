@@ -116,7 +116,7 @@ async function signout() {
 
 function handleLoginClick() {
   // 跳转到 OIDC 登录接口，通过 Nuxt 代理转发到后端
-  window.location.href = "/oidc/login/signin";
+  window.location.href = "/bbsoidc/login/signin";
 }
 
 </script>

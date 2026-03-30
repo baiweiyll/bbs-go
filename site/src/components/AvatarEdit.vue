@@ -42,11 +42,11 @@ async function uploadAvatar(e) {
     const file = files[0];
     const formData = new FormData();
     formData.append("image", file, file.name);
-    const ret = await useHttpPost("/api/upload", formData);
+    const ret = await useHttpPost("/bbsapi/upload", formData);
 
     // 设置头像
     await useHttpPost(
-      "/api/user/update/avatar",
+      "/bbsapi/user/update/avatar",
       useJsonToForm({
         avatar: ret.url,
       })

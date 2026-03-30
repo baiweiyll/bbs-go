@@ -36,7 +36,7 @@ onMounted(() => {
 
 async function loadData() {
   const data = await useHttpGet(
-    `/api/fans/recent/fans?userId=${props.user.id}`
+    `/bbsapi/fans/recent/fans?userId=${props.user.id}`
   );
   fansList.value = data.results;
 }

@@ -37,7 +37,7 @@ func (c *ApiController) GetInit() *web.JsonResult {
 	}
 
 	for _, route := range routes {
-		if !strings.HasPrefix(route.Path(), "/api/admin") {
+		if !strings.HasPrefix(route.Path(), "/bbsapi/admin") {
 			continue
 		}
 

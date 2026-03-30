@@ -5,7 +5,7 @@
         <div class="article-header">
           <a
             class="article-title"
-            :href="useSiteURL(`/article/${item.id}`)"
+            :href="useSiteURL(`/forum/article/${item.id}`)"
             target="_blank"
             >{{ item.title }}</a
           >
@@ -29,7 +29,7 @@
             <div class="article-meta">
               <div class="article-meta-left">
                 <a
-                  :href="useSiteURL(`/user/${item.user.id}`)"
+                  :href="useSiteURL(`/forum/user/${item.user.id}`)"
                   class="article-meta-item"
                   target="_blank"
                 >
@@ -112,7 +112,7 @@
   const deleteSubmit = async (row) => {
     try {
       await axios.form(
-        '/api/admin/article/delete',
+        '/bbsapi/admin/article/delete',
         jsonToFormData({ id: row.id })
       );
       useNotificationSuccess(t('pages.article.deleteSuccess'));
@@ -124,7 +124,7 @@
   const auditSubmit = async (row) => {
     try {
       await axios.form(
-        '/api/admin/article/audit',
+        '/bbsapi/admin/article/audit',
         jsonToFormData({ id: row.id })
       );
       useNotificationSuccess(t('pages.article.auditSuccess'));

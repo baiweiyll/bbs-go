@@ -8,7 +8,7 @@
     </div>
 
     <div class="widget-content">
-      <load-more-async v-slot="{ results }" url="/api/user/messages">
+      <load-more-async v-slot="{ results }" url="/bbsapi/user/messages">
         <ul v-if="results && results.length" class="message-list">
           <li
             v-for="message in results"
@@ -48,7 +48,7 @@
                   v-if="message.detailUrl"
                   class="msg-attr message-show-more"
                 >
-                  <a :href="message.detailUrl" target="_blank">{{
+                  <a :href="ensureForumPath(message.detailUrl)" target="_blank">{{
                     $t("user.messages.viewDetails")
                   }}</a>
                 </div>
@@ -68,6 +68,7 @@ definePageMeta({
 });
 
 const { t } = useI18n();
+const ensureForumPath = useEnsureForumPath;
 
 useHead({
   title: useSiteTitle(t("user.messages.title")),

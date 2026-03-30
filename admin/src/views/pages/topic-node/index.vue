@@ -157,7 +157,7 @@
     loading.value = true;
     try {
       const ret = await axios.postForm<any>(
-        '/api/admin/topic-node/list',
+        '/bbsapi/admin/topic-node/list',
         jsonToFormData(filters)
       );
       data.page = ret.page;

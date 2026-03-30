@@ -104,7 +104,7 @@ useHead({
 });
 
 const { data: user, refresh: userRefresh } = await useMyFetch(
-  "/api/user/current"
+  "/bbsapi/user/current"
 );
 
 const setUsernameDialog = ref(null);
@@ -121,7 +121,7 @@ const showWxBindDialog = () => wxBindDialog.value.show();
 async function requestEmailVerify() {
   const loading = useLoading();
   try {
-    await useHttpPost("/api/user/send_verify_email");
+    await useHttpPost("/bbsapi/user/send_verify_email");
     useMsgSuccess(
       t("user.profile.account.emailVerifySuccess", { email: user.value.email })
     );

@@ -32,7 +32,7 @@
 
               <load-more-async
                 v-slot="{ results }"
-                url="/api/topic/user/topics"
+                url="/bbsapi/topic/user/topics"
                 :params="{ userId: user.id }"
               >
                 <topic-list :topics="results" :show-avatar="false" />
@@ -65,7 +65,7 @@ if (currentUser && currentUser.id === userId) {
   user = currentUser;
 } else {
   // 否则从 API 获取用户数据
-  user = await useHttpGet(`/api/user/${route.params.userId}`);
+  user = await useHttpGet(`/bbsapi/user/${route.params.userId}`);
 }
 
 const activeTab = ref("topics");

@@ -27,13 +27,15 @@ export const useUserStore = defineStore("user", {
     },
     
     async fetchCurrent() {
-      const { data } = await useMyFetch("/api/user/current");
-      this.user = data.value;
+      const { data } = await useMyFetch("/bbsapi/user/current");
+      const userData = data.value;
+      // 后端返回 data: null 时清空 store 和 localStorage
+      this.setUser(userData || null);
       return this.user;
     },
     async signin(body) {
       const { user, token, redirect } = await useHttpPost(
-        "/api/login/signin",
+        "/bbsapi/login/signin",
         useJsonToForm(body)
       );
       this.user = user;
@@ -44,17 +46,17 @@ export const useUserStore = defineStore("user", {
       };
     },
     async signout() {
-      // await useHttpGet("/oidc/login/signout");
+      // await useHttpGet("/bbsoidc/login/signout");
       this.user = null;
       // 清除 localStorage 中的用户信息
       if (typeof localStorage !== 'undefined') {
         localStorage.removeItem('userInfo');
       }
-       window.location.href = "/oidc/login/signout";
+       window.location.href = "/bbsoidc/login/signout";
     },
     async signup(form) {
       const { user, token, redirect } = await useHttpPost(
-        "/api/login/signup",
+        "/bbsapi/login/signup",
         useJsonToForm(form)
       );
       this.user = user;

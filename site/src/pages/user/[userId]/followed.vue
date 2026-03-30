@@ -30,7 +30,7 @@
 
             <load-more-async
               v-slot="{ results }"
-              url="/api/fans/followed"
+              url="/bbsapi/fans/followed"
               :params="{ userId: user.id }"
             >
               <user-follow-list :users="results" />
@@ -44,7 +44,7 @@
 
 <script setup>
 const route = useRoute();
-const user = await useHttpGet(`/api/user/${route.params.userId}`);
+const user = await useHttpGet(`/bbsapi/user/${route.params.userId}`);
 const activeTab = ref("followed");
 const { t } = useI18n();
 

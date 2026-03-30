@@ -183,9 +183,9 @@ import { useI18n } from 'vue-i18n';
 const route = useRoute();
 const { t } = useI18n();
 
-const { data: topic } = await useMyFetch(`/api/topic/${route.params.id}`);
+const { data: topic } = await useMyFetch(`/bbsapi/topic/${route.params.id}`);
 
-const { data: liked } = await useMyFetch("/api/like/liked", {
+const { data: liked } = await useMyFetch("/bbsapi/like/liked", {
   params: {
     entityType: "topic",
     entityId: route.params.id,
@@ -193,11 +193,11 @@ const { data: liked } = await useMyFetch("/api/like/liked", {
 });
 
 const { data: likeUsers, refresh: refreshLikeUsers } = await useMyFetch(
-  `/api/topic/recentlikes/${route.params.id}`
+  `/bbsapi/topic/recentlikes/${route.params.id}`
 );
 
 const { data: hideContent, refresh: refreshHideContent } = await useMyFetch(
-  `/api/topic/hide_content?topicId=${route.params.id}`
+  `/bbsapi/topic/hide_content?topicId=${route.params.id}`
 );
 
 const imageUrls = computed(() => {
@@ -223,7 +223,7 @@ async function like() {
   try {
     if (liked.value) {
       await useHttpPost(
-        "/api/like/unlike",
+        "/bbsapi/like/unlike",
         useJsonToForm({
           entityType: "topic",
           entityId: topic.value.id,
@@ -237,7 +237,7 @@ async function like() {
       await refreshLikeUsers();
     } else {
       await useHttpPost(
-        "/api/like/like",
+        "/bbsapi/like/like",
         useJsonToForm({
           entityType: "topic",
           entityId: topic.value.id,
@@ -258,7 +258,7 @@ async function addFavorite(topicId) {
   try {
     if (topic.value.favorited) {
       await useHttpPost(
-        "/api/favorite/delete",
+        "/bbsapi/favorite/delete",
         useJsonToForm({
           entityType: "topic",
           entityId: topicId,
@@ -268,7 +268,7 @@ async function addFavorite(topicId) {
       useMsgSuccess(t('pages.topic.detail.favoriteSuccess'));
     } else {
       await useHttpPost(
-        "/api/favorite/add",
+        "/bbsapi/favorite/add",
         useJsonToForm({
           entityType: "topic",
           entityId: topicId,

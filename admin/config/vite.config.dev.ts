@@ -5,7 +5,7 @@ import baseConfig from './vite.config.base';
 export default mergeConfig(
   {
     mode: 'development',
-    base: '/',
+    base: '/forum/admin/',
     server: {
       port: 8080,
       open: true,

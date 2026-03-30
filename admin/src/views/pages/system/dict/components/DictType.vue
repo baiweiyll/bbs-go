@@ -73,7 +73,7 @@
   const list = async () => {
     loading.value = true;
     try {
-      const ret = await axios.get('/api/admin/dict-type/list');
+      const ret = await axios.get('/bbsapi/admin/dict-type/list');
 
       results.value = ret;
       if (!dictStore.currentTypeId && ret && ret.length) {

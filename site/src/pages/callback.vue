@@ -33,7 +33,7 @@ const processLoginCallback = () => {
     return
   } else {
     // 跳转到 OIDC 回调接口，通过 Nuxt 代理转发到后端
-    window.location.href = "/oidc/login/callback?code=" + code + "&state=" + state;
+    window.location.href = "/bbsoidc/login/callback?code=" + code + "&state=" + state;
   }
 
   // try {

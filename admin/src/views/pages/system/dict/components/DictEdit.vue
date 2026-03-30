@@ -79,7 +79,7 @@
   const dicts = ref([]);
   const loadDicts = async () => {
     dicts.value = await axios.get(
-      `/api/admin/dict/dicts?typeId=${dictStore.currentType.id}`
+      `/bbsapi/admin/dict/dicts?typeId=${dictStore.currentType.id}`
     );
   };
 
@@ -103,7 +103,7 @@
     await loadDicts();
 
     try {
-      form.value = await axios.get(`/api/admin/dict/${id}`);
+      form.value = await axios.get(`/bbsapi/admin/dict/${id}`);
     } catch (e) {
       useHandleError(e);
     }
@@ -122,8 +122,8 @@
     }
     try {
       const url = config.isCreate
-        ? '/api/admin/dict/create'
-        : '/api/admin/dict/update';
+        ? '/bbsapi/admin/dict/create'
+        : '/bbsapi/admin/dict/update';
       if (config.isCreate) {
         form.value.typeId = dictStore.currentTypeId;
       }

@@ -15,7 +15,7 @@ export const useConfigStore = defineStore("config", {
   },
   actions: {
     async fetchConfig() {
-      const { data } = await useMyFetch("/api/config/configs");
+      const { data } = await useMyFetch("/bbsapi/config/configs");
       this.config = data.value;
     },
   },

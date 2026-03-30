@@ -7,7 +7,7 @@
           <load-more-async
             ref="loadMore"
             v-slot="{ results }"
-            url="/api/search/topic"
+            url="/bbsapi/search/topic"
             :params="params"
           >
             <search-topic-list :results="results" />

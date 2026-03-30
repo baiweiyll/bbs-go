@@ -69,7 +69,7 @@
     config.title = t('pages.api.editTitle');
 
     try {
-      form.value = await axios.get(`/api/admin/api/${id}`);
+      form.value = await axios.get(`/bbsapi/admin/api/${id}`);
     } catch (e: any) {
       useHandleError(e);
     }
@@ -88,8 +88,8 @@
     }
     try {
       const url = config.isCreate
-        ? '/api/admin/api/create'
-        : '/api/admin/api/update';
+        ? '/bbsapi/admin/api/create'
+        : '/bbsapi/admin/api/update';
       await axios.postForm<any>(url, jsonToFormData(form.value));
       useNotificationSuccess(t('pages.api.submitSuccess'));
       emit('ok');

@@ -196,7 +196,7 @@ async function autocomplete() {
     autocompleteTags.value = [];
   } else {
     const ret = await useHttpPost(
-      "/api/tag/autocomplete",
+      "/bbsapi/tag/autocomplete",
       useJsonToForm({
         input: inputTag.value,
       })

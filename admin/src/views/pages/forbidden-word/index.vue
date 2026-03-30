@@ -150,7 +150,7 @@
     loading.value = true;
     try {
       const ret = await axios.postForm<any>(
-        '/api/admin/forbidden-word/list',
+        '/bbsapi/admin/forbidden-word/list',
         jsonToFormData(filters)
       );
       data.page = ret.page;

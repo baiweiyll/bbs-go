@@ -70,13 +70,13 @@ const form = ref({
 const show = async () => {
   visible.value = true;
 
-  const user = await useHttpGet("/api/user/current");
+  const user = await useHttpGet("/bbsapi/user/current");
   email.value = user.email;
 };
 
 const submit = async () => {
   try {
-    await useHttpPost("/api/user/update_password", useJsonToForm(form.value));
+    await useHttpPost("/bbsapi/user/update_password", useJsonToForm(form.value));
     visible.value = false;
     emits("success");
     useMsgSuccess(t("component.updatePasswordDialog.success"));
