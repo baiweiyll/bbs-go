@@ -5,6 +5,7 @@ import (
 	"bbs-go/internal/pkg/errs"
 	"bbs-go/internal/pkg/urls"
 	"bbs-go/internal/services"
+	"log/slog"
 
 	"github.com/kataras/iris/v12"
 	"github.com/mlogclub/simple/web"
@@ -38,6 +39,7 @@ func AdminAuth(ctx iris.Context) {
 		notLogin(ctx)
 		return
 	}
+	slog.Info("Get ddmin user", slog.Any("roles", roles), slog.Any("User", user))
 	if !user.HasAnyRole(roles...) {
 		noPermission(ctx)
 		return
