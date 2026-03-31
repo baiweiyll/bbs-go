@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log/slog"
+	"strings"
 	"time"
 
 	"bbs-go/internal/models"
@@ -202,9 +203,22 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 		return nil
 	}
 	if oidcClaims.Groups == nil {
-		slog.Error("OIDC email is required")
+		slog.Error("No grouping information")
 		c.redirectWithError(conf.Console, c.Ctx, fmt.Errorf("You do not have access permission"))
 		return nil
+	} else {
+		hasBbsGoGroup := false
+		for _, group := range oidcClaims.Groups {
+			if strings.Compare("bbs-go", group) == 0 {
+				hasBbsGoGroup = true
+				break
+			}
+		}
+		if !hasBbsGoGroup {
+			slog.Error("No valid grouping information")
+			c.redirectWithError(conf.Console, c.Ctx, fmt.Errorf("You do not have permission to access"))
+			return nil
+		}
 	}
 	// 查找或创建用户
 	user := services.UserService.FindOne(sqls.NewCnd().Eq("email", oidcClaims.Email))
