@@ -206,7 +206,7 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 	}
 	if oidcClaims.Groups == nil {
 		slog.Error("No grouping information")
-		c.redirectWithError(conf.Console, c.Ctx, fmt.Errorf("You do not have access permission"), nil)
+		c.redirectWithError(conf.Console, c.Ctx, fmt.Errorf("You do not have access permission"), oauth2Token)
 		return nil
 	} else {
 		hasBbsGoGroup := false
@@ -218,7 +218,7 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 		}
 		if !hasBbsGoGroup {
 			slog.Error("No valid grouping information")
-			c.redirectWithError(conf.Console, c.Ctx, fmt.Errorf("You do not have permission to access"), oauth2Token)
+			c.redirectWithError(conf.Console, c.Ctx, fmt.Errorf("You do not have permission to access"), nil)
 			return nil
 		}
 	}
