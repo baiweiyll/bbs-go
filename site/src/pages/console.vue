@@ -396,7 +396,7 @@ const handleConfirm = async () => {
     const userId = decodedData.value?.data?.user_id
 
     // 使用绝对 URL 调用，绕过 Nuxt 路由，直接请求 nitro 代理
-    const response = await $fetch('/mceproduct/oidc/account-product/v3/user-groups/d5ab2fa4-256a-4066-926a-f95a047fb5d9/members', {
+    const response = await $fetch('/account-api/v3/user-groups/d5ab2fa4-256a-4066-926a-f95a047fb5d9/members', {
       baseURL: '',
       method: 'POST',
       headers: {
