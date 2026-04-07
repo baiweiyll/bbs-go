@@ -42,7 +42,7 @@ func (s *userTokenService) GetCurrent(ctx iris.Context) *models.User {
 	userToken := cache.UserTokenCache.Get(token)
 	// 没找到授权
 	if userToken == nil || userToken.Status == constants.StatusDeleted {
-		slog.Error("GetCurrent: token deleted", slog.Any("Token", token))
+		slog.Error("GetCurrent: token is missing, was it deleted", slog.Any("Token", token))
 		return nil
 	}
 	// 授权过期
