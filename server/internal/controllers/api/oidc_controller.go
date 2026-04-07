@@ -206,7 +206,14 @@ func (c *OIDCController) GetCallback() *web.JsonResult {
 	}
 	if oidcClaims.Groups == nil {
 		slog.Error("No grouping information")
-		c.redirectWithError(conf.Console, c.Ctx, fmt.Errorf("You do not have access permission"), idToken)
+		fallRes := &struct {
+			UserID string `json:"user_id"`
+			Token  string `json:"token"`
+		}{
+			UserID: oidcClaims.UserID,
+			Token:  rawIDToken,
+		}
+		c.redirectWithError(conf.Console, c.Ctx, fmt.Errorf("You do not have access permission"), fallRes)
 		return nil
 	} else {
 		hasBbsGoGroup := false
