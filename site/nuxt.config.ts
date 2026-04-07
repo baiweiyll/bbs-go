@@ -99,9 +99,9 @@ export default defineNuxtConfig({
         proxy: `${serverURL}/bbsapi/**`,
       },
       // 数智底座用户组授权接口代理
-      '/mceproduct/**': {
+      '/account-api/**': {
         proxy: {
-          to: 'http://gateway-it.changhong.com/mceproduct/**',
+          to: 'https://cloud.changhong.com/account-api/**',
           fetchOptions: {
             headers: {
               'Content-Type': 'application/json',
