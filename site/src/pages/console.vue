@@ -1,60 +1,361 @@
 <template>
-  <div>
-    <!-- 页面内容为空，仅用于处理回调逻辑 -->
+  <div class="agreement-page">
+    <!-- 背景装饰 -->
+    <div class="bg-decoration">
+      <div class="gradient-orb orb-1"></div>
+      <div class="gradient-orb orb-2"></div>
+      <div class="grid-pattern"></div>
+    </div>
+
+    <div class="content-wrapper">
+
+      <!-- 错误状态 -->
+      <div v-if="errorMessage" class="error-container">
+        <div class="error-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 8v4M12 16h.01" />
+          </svg>
+        </div>
+        <h2 class="error-title">访问受限</h2>
+        <p class="error-desc">{{ errorMessage }}</p>
+        <NuxtLink to="/" class="back-link">返回首页</NuxtLink>
+      </div>
+
+      <!-- 加载状态 -->
+      <div v-else-if="loading" class="loading-container">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">正在加载...</p>
+      </div>
+
+      <!-- 协议内容 -->
+      <div v-else-if="showAgreement" class="agreement-container">
+        <div class="agreement-header">
+          <span class="section-label">用户授权协议</span>
+          <h1 class="agreement-title">用户注册及社区使用协议</h1>
+          <p class="agreement-subtitle">在使用数智底座技术论坛服务前，请仔细阅读并同意以下协议条款</p>
+        </div>
+
+        <!-- 协议正文区域 -->
+        <div ref="agreementContent" class="agreement-content" @scroll="handleScroll">
+          <div class="content-inner">
+            <section class="content-section">
+              <p>
+                欢迎您使用数智底座技术论坛（以下简称"本平台"）提供的论坛社区服务。本平台主要为用户提供技术底座相关的经验分享、问题交流、提问回答、资料发布、讨论互动等服务。在您注册、登录、浏览、发帖、评论、回复、上传内容或以其他方式使用本平台服务前，请您认真阅读并充分理解本《用户注册、社区使用及隐私保护协议》（以下简称"本协议"）全部内容。您点击"同意""注册""提交"或实际使用本平台服务的，即表示您已阅读、理解并同意接受本协议全部条款的约束。如您不同意本协议任一内容，请您立即停止注册或使用本平台服务。
+              </p>
+            </section>
+
+            <section class="content-section">
+              <h3>第一条 定义</h3>
+              <p>1. 本平台：指由AI与数智产品研发中心运营的数智底座技术论坛网站、网页、客户端、小程序及与之相关的论坛社区服务。</p>
+              <p>2. 用户：指注册、登录、浏览或使用本平台服务的自然人、法人或其他组织。</p>
+              <p>3. 账号：指用户在本平台注册取得的身份标识，用于登录和使用本平台服务。</p>
+              <p>4. 内容：指用户通过本平台发布、上传、传播、存储或展示的任何信息，包括但不限于文字、图片、音视频、链接、代码、文档、评论、回复、头像、昵称、签名、附件等。</p>
+              <p>5. 平台规则：指本平台不时发布并公示的与本平台服务相关的说明、公告、通知、站内提示、操作规则等。</p>
+            </section>
+
+            <section class="content-section">
+              <h3>第二条 服务内容</h3>
+              <p>1. 本平台系技术交流论坛，主要用于围绕技术底座、研发实践、架构设计、运维经验、工具使用、问题讨论等开展社区交流。</p>
+              <p>2.
+                本平台可向用户提供包括但不限于以下服务：（1）账号注册、登录、找回、注销；（2）发帖、评论、回复、提问、回答、点赞、收藏、关注；（3）资料上传、代码片段发布、文档分享、话题讨论；（4）搜索、推荐、举报、申诉、消息通知；（5）其他与论坛社区相关的功能或服务。
+              </p>
+              <p>3. 本平台有权根据业务需要对服务功能、页面结构、展示方式、访问权限、发布规则进行调整、变更、升级、中断或终止。</p>
+            </section>
+
+            <section class="content-section">
+              <h3>第三条 用户注册与身份信息</h3>
+              <p>1. 用户注册本平台账号时，应提供真实、准确、合法、有效且完整的注册信息，并在信息发生变化时及时更新。</p>
+              <p>2. 根据法律法规及监管要求，本平台在提供发帖、评论、回复、提问、回答、私信或其他信息发布功能时，有权要求用户完成真实身份信息登记、核验或认证；未按要求完成的，本平台有权限制相关功能的使用。</p>
+              <p>3. 用户设置的昵称、头像、个人简介、签名、主页名称等账号信息，不得含有违法违规、不良导向、冒充他人、误导公众、低俗营销或其他不适宜展示的内容。</p>
+              <p>4. 用户不得冒用他人身份、伪造主体信息、批量注册账号、恶意注册账号，或通过技术手段规避本平台的账号管理要求。</p>
+              <p>5. 未成年人使用本平台服务的，应在其监护人同意并指导下进行。涉及依法需要监护人同意的事项，应按法律规定执行。</p>
+            </section>
+
+            <section class="content-section">
+              <h3>第四条 账号安全与使用规范</h3>
+              <p>1. 用户应妥善保管账号、密码、验证码及其他登录凭证，并对其账号下发生的全部行为承担责任。</p>
+              <p>2.
+                用户不得实施以下行为：（1）赠与、出租、出借、出售、转让账号；（2）盗取、冒用、共享他人账号；（3）批量控制账号、养号、刷号、撞库、破解、套取验证码；（4）利用多个账号扰乱社区秩序、规避平台治理；（5）从事任何危害账号安全或平台安全的行为。
+              </p>
+              <p>3. 如发现账号异常、被盗、被冒用或存在其他安全风险，用户应立即通知本平台；因用户保管不善造成的损失，由用户自行承担相应责任。</p>
+            </section>
+
+            <section class="content-section">
+              <h3>第五条 用户内容发布基本原则</h3>
+              <p>1. 用户在本平台发布内容时，应遵守中华人民共和国法律法规、公序良俗、社会公德和本协议约定，坚持合法、真实、客观、理性、文明、善意的交流原则。</p>
+              <p>2. 用户应确保其发布内容不侵犯任何第三方的合法权益，不破坏本平台正常运营秩序，不损害国家利益、社会公共利益或他人合法权益。</p>
+              <p>3. 用户对其发布内容的真实性、合法性、准确性、完整性负责，并自行承担因此产生的法律责任。</p>
+            </section>
+
+            <section class="content-section">
+              <h3>第六条 禁止发布的内容</h3>
+              <p>用户不得利用本平台制作、复制、发布、传播、存储或以其他方式处理法律法规禁止的信息，不得发布包括但不限于以下内容：</p>
+              <p>1. 反对宪法确定的基本原则的；</p>
+              <p>2. 危害国家安全、泄露国家秘密、颠覆国家政权、破坏国家统一的；</p>
+              <p>3. 损害国家荣誉和利益的；</p>
+              <p>4. 歪曲、丑化、亵渎、否定英雄烈士事迹和精神的；</p>
+              <p>5. 宣扬恐怖主义、极端主义，煽动实施恐怖活动、极端主义活动的；</p>
+              <p>6. 煽动民族仇恨、民族歧视，破坏民族团结的；</p>
+              <p>7. 破坏国家宗教政策，宣扬邪教和封建迷信的；</p>
+              <p>8. 编造、散布谣言，扰乱经济秩序或社会秩序的；</p>
+              <p>9. 散布淫秽、色情、赌博、暴力、恐怖、凶杀或者教唆犯罪的；</p>
+              <p>10. 侮辱、诽谤、骚扰、威胁他人，侵害他人名誉、隐私、肖像、个人信息等合法权益的；</p>
+              <p>11. 含有诈骗、非法集资、传销、虚假交易、恶意引流等违法活动信息的；</p>
+              <p>12. 侵犯知识产权、商业秘密，或违反保密义务、合同约定的；</p>
+              <p>13. 含有病毒、木马、恶意代码、攻击程序、钓鱼链接、后门工具、非法控制程序等危害网络安全内容的；</p>
+              <p>14. 含有传授违法犯罪方法，或明显可直接用于实施攻击入侵、窃取数据、盗号盗刷、绕过授权、破坏系统等违法行为的内容；</p>
+              <p>15. 擅自公开他人身份证号、手机号、住址、邮箱、银行账户、聊天记录、工作资料、内部文件等个人信息或敏感信息的；</p>
+              <p>16. 法律、行政法规及国家规定禁止的其他内容。</p>
+            </section>
+
+            <section class="content-section">
+              <h3>第七条 禁止实施的行为</h3>
+              <p>除不得发布前述违法信息外，用户还不得实施以下扰乱社区秩序或损害平台生态的行为：</p>
+              <p>1. 恶意灌水、刷屏、重复发帖、无意义回复；</p>
+              <p>2. 恶意引战、人身攻击、侮辱谩骂、挑动对立；</p>
+              <p>3. 发布低俗、媚俗、庸俗、血腥、惊悚或令人强烈不适的内容；</p>
+              <p>4. 发布与版块主题明显无关的内容，或故意使用夸张、误导、虚假标题；</p>
+              <p>5. 未经本平台许可发布广告、营销信息、导流信息、外部群链接、商务推广内容；</p>
+              <p>6. 利用自动化工具批量发布内容，或者大量生成、搬运、拼接低质量内容；</p>
+              <p>7. 组织刷赞、刷评、刷收藏、刷热度，操纵内容排序或社区讨论氛围；</p>
+              <p>8. 冒充官方、管理员、版主、他人身份，误导其他用户；</p>
+              <p>9. 干扰、攻击、破坏本平台系统、接口、数据、功能或服务器；</p>
+              <p>10. 其他违反法律法规、本协议或平台规则、破坏平台正常运营秩序的行为。</p>
+            </section>
+
+            <section class="content-section">
+              <h3>第八条 技术内容特别约定</h3>
+              <p>鉴于本平台属于技术交流论坛，用户发布技术资料、代码、脚本、配置、接口说明、安全研究内容时，还应遵守以下要求：</p>
+              <p>1. 不得发布未经授权获取的源代码、数据库、内部接口文档、密钥、令牌、账号密码、生产配置等敏感资料；</p>
+              <p>2. 不得借"学习交流""安全研究""技术讨论"之名发布具有明显违法用途或高滥用风险的内容；</p>
+              <p>3. 涉及漏洞分析、攻防演示、测试脚本、自动化工具的内容，应以合法授权、防御研究和风险提示为前提；</p>
+              <p>4. 本平台有权对可能引发安全风险或违法风险的技术内容进行人工审核、限制展示、删除或拒绝发布。</p>
+            </section>
+
+            <section class="content-section">
+              <h3>第九条 平台对内容和行为的管理权</h3>
+              <p>1. 本平台有权依据法律法规、本协议及平台规则，对用户账号信息、发布内容、互动行为进行审核、巡查、监测、判断和处置。</p>
+              <p>2.
+                对涉嫌违法违规、侵权、不实、低质、风险较高或违反社区秩序的内容与行为，本平台有权单方采取一项或多项措施，包括但不限于：（1）警示提醒；（2）要求修改、更正、补充说明；（3）限制发布、延后展示、折叠、屏蔽、删除；（4）断开链接、下架附件、关闭评论、限制传播；（5）限制发帖、评论、回复、私信、上传、登录等功能；（6）短期禁言、长期禁言、暂停账号使用；（7）永久封禁账号；（8）关闭版块、关闭话题、取消管理权限；（9）保存有关记录，并依法向有关主管部门报告或配合调查。
+              </p>
+              <p>3. 对明显违法违规或存在重大风险的内容，本平台有权在不事先通知用户的情况下立即处置。</p>
+              <p>4. 本平台有权根据违法违规程度、主观恶意、影响范围、历史违规情况等因素，对用户采取从轻、从重或累计处理。</p>
+            </section>
+
+            <section class="content-section">
+              <h3>第十条 举报、投诉与申诉</h3>
+              <p>1. 本平台设有举报投诉渠道，用户可通过举报入口举报违法违规、侵权、骚扰、诈骗、虚假信息等内容或行为。</p>
+              <p>2. 举报人应尽量提供相关链接、截图、说明、证据材料，以便本平台核查。</p>
+              <p>3. 本平台将在合理期限内处理举报投诉；对情况复杂、证据不足或需进一步核实的，可适当延长处理时间。</p>
+              <p>4. 被处理用户如对处理结果有异议，可提交申诉材料，本平台将在审核后决定是否调整处理结果。</p>
+              <p>5. 对恶意举报、虚假举报、反复滥用举报机制的，本平台有权拒绝受理并采取相应限制措施。</p>
+            </section>
+
+            <section class="content-section">
+              <h3>第十一条 个人信息处理规则</h3>
+              <p>1. 本平台依法处理用户个人信息，并采取相应安全措施保护用户个人信息安全。</p>
+              <p>2. 本平台可能收集的个人信息包括但不限于：注册信息（用户名、手机号、邮箱、密码）、身份核验信息、账号资料、使用信息、设备与网络信息、投诉举报申诉信息、法律法规要求或为实现服务功能所必要的其他信息。</p>
+              <p>3.
+                本平台收集和使用个人信息的目的包括但不限于：完成注册、登录、身份核验与账号管理；提供发帖、评论、互动、搜索、消息通知等社区服务；保障账号安全、系统安全和平台运营安全；识别、预防、制止违法违规行为；处理投诉举报、纠纷争议和配合监管、司法要求；优化服务体验、改进产品功能。
+              </p>
+              <p>4. 本平台不会超出前述目的处理用户个人信息；如需将个人信息用于其他目的，或处理方式发生重大变化，本平台将依法另行告知并取得相应同意。</p>
+              <p>5. 本平台将根据法律法规要求和实现服务目的的必要期限保存用户个人信息；超过保存期限后，将依法删除或匿名化处理。</p>
+              <p>6. 未经用户同意，本平台不会向无关第三方提供用户个人信息；但在法律法规规定的情形下除外。</p>
+              <p>7. 用户有权依法查询、更正、补充、删除其个人信息，有权注销账号并撤回相应授权。</p>
+            </section>
+
+            <section class="content-section">
+              <h3>第十二条 用户内容与知识产权</h3>
+              <p>1. 用户对其依法享有权利的原创内容，保留相应的知识产权。</p>
+              <p>2. 用户保证其发布内容不侵犯任何第三方的著作权、商标权、专利权、商业秘密、肖像权、名誉权、隐私权、个人信息权益或其他合法权益。</p>
+              <p>3. 为实现平台服务目的，用户同意授予本平台一项免费的、非独占的、可分许可的、在本协议有效期内及合理必要期限内有效的使用许可。</p>
+              <p>4. 因用户发布内容引发任何纠纷、投诉、索赔或处罚的，由用户自行承担责任；给本平台造成损失的，用户应承担赔偿责任。</p>
+            </section>
+
+            <section class="content-section">
+              <h3>第十三条 未成年人保护</h3>
+              <p>1. 未成年人应在监护人监护、指导下阅读并同意本协议后使用本平台。</p>
+              <p>2. 监护人应合理引导未成年人安全使用网络，避免泄露个人信息、参与不适宜活动或发布不适宜内容。</p>
+              <p>3. 本平台有权根据法律法规及平台规则，对涉及未成年人保护的内容、功能、时段或行为采取必要限制措施。</p>
+            </section>
+
+            <section class="content-section">
+              <h3>第十四条 平台免责与责任边界</h3>
+              <p>1. 用户在本平台发布的内容仅代表其个人立场和观点，不代表本平台立场。</p>
+              <p>2. 本平台致力于维护健康、合规的社区生态，但不对用户内容的绝对真实性、准确性、完整性、及时性作保证。</p>
+              <p>3. 用户因浏览、使用、依赖其他用户发布内容而产生的风险和后果，由用户自行判断并承担。</p>
+              <p>4. 因不可抗力、网络故障、系统维护、黑客攻击、通信故障、第三方服务异常等原因导致服务中断、延迟、数据异常或功能不可用的，本平台将在合理范围内尽力恢复，但对法律规定以外的损失不承担责任。</p>
+              <p>5. 本条免责约定不适用于因本平台故意或重大过失造成用户损失的情形。</p>
+            </section>
+
+            <section class="content-section">
+              <h3>第十五条 违约责任</h3>
+              <p>1. 用户违反本协议、平台规则或法律法规的，本平台有权依据本协议采取相应处理措施。</p>
+              <p>2. 如用户行为导致本平台遭受投诉、索赔、行政处罚、诉讼仲裁、声誉损害或其他损失的，用户应承担相应赔偿责任，包括但不限于赔偿金、罚款、律师费、诉讼费、公证费、取证费、差旅费等合理维权成本。</p>
+              <p>3. 本平台未立即行使相关权利，不构成对该等权利的放弃。</p>
+            </section>
+
+            <section class="content-section">
+              <h3>第十六条 服务变更、中止与终止</h3>
+              <p>1. 本平台有权根据法律法规变化、监管要求、业务调整、系统安全和运营需要，对全部或部分服务进行变更、中止或终止。</p>
+              <p>2. 如用户存在违法违规、恶意扰乱平台秩序、长期闲置、冒名注册、信息失真、反复侵权等情形，本平台有权中止或终止向该用户提供服务。</p>
+              <p>3. 服务终止后，本平台仍可依法保留相关记录并继续追究用户责任。</p>
+            </section>
+
+            <section class="content-section">
+              <h3>第十七条 协议修改与通知</h3>
+              <p>1. 本平台有权根据法律法规变化、监管要求、业务发展和运营需要，对本协议进行修改。</p>
+              <p>2. 修改后的协议将通过注册页、公告页、站内信、弹窗或其他合理方式通知用户。</p>
+              <p>3. 修改后的协议自公示或通知载明之日起生效；用户在协议生效后继续使用本平台服务的，视为接受修改后的协议。</p>
+            </section>
+
+            <section class="content-section">
+              <h3>第十八条 法律适用与争议解决</h3>
+              <p>1. 本协议的订立、履行、解释及争议解决，适用中华人民共和国法律。</p>
+              <p>2. 因本协议引起或与本协议有关的任何争议，双方应先友好协商解决；协商不成的，任一方均可向有管辖权的人民法院提起诉讼。</p>
+            </section>
+
+            <section class="content-section">
+              <h3>第十九条 其他</h3>
+              <p>1. 本协议是您与本平台之间关于注册、使用本平台服务、社区行为规范及个人信息处理事项的完整约定。</p>
+              <p>2. 如本协议任何条款被认定为无效或不可执行，不影响其他条款的效力。</p>
+              <p>3. 本协议标题仅为阅读方便，不影响条款解释。</p>
+            </section>
+          </div>
+        </div>
+
+        <!-- 进度指示器 -->
+        <div class="reading-progress">
+          <div class="progress-bar">
+            <div class="progress-fill" :style="{ width: readProgress + '%' }"></div>
+          </div>
+          <span class="progress-text">
+            {{ readComplete ? '阅读完成' : `请继续阅读 (${Math.round(readProgress)}%)` }}
+          </span>
+        </div>
+
+        <!-- 操作区域 -->
+        <div class="action-area" :class="{ 'can-confirm': canConfirm }">
+          <label class="agreement-checkbox" :class="{ disabled: !readComplete }">
+            <input v-model="agreed" type="checkbox" :disabled="!readComplete" @change="handleAgreeChange" />
+            <span class="checkbox-custom">
+              <svg v-if="agreed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </span>
+            <span class="checkbox-label">
+              我已阅读并同意以上协议条款
+              <span v-if="!readComplete" class="wait-hint">（需完整阅读协议）</span>
+            </span>
+          </label>
+
+          <button class="confirm-btn" :class="{ active: agreed && readComplete, loading: submitting }"
+            :disabled="!agreed || !readComplete || submitting" @click="handleConfirm">
+            <span class="btn-text">{{ submitting ? '授权中...' : '确认授权' }}</span>
+            <span class="btn-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 授权成功 -->
+      <div v-else-if="authorized" class="success-container">
+        <div class="success-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+        </div>
+        <h2 class="success-title">授权成功</h2>
+        <p class="success-desc">即将跳转到控制台...</p>
+      </div>
+    </div>
   </div>
 </template>
-  
-<script setup lang="ts">
-import { Base64 } from 'js-base64'
-import { useRouter } from '#app'
 
-// 使用 Nuxt 3 的路由
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { Base64 } from 'js-base64'
+
+// 使用无页脚布局，保留头部
+definePageMeta({
+  layout: 'no-footer',
+})
+
+const route = useRoute()
 const router = useRouter()
 
-// 获取 URL 参数
-function getUrlParam(name: string): string | null {
-  if (typeof window === 'undefined') return null
+// 状态
+const decodedData = ref(null)
+const errorMessage = ref('')
+const loading = ref(true)
+const showAgreement = ref(false)
+const readProgress = ref(0)
+const agreed = ref(false)
+const submitting = ref(false)
+const authorized = ref(false)
+const agreementContent = ref(null)
 
-  const urlParams = new URLSearchParams(window.location.search)
-  console.log('URL Parameters:', urlParams)
-  return urlParams.get(name)
-}
+// 计算属性
+const readComplete = computed(() => readProgress.value >= 95)
+const canConfirm = computed(() => agreed.value && readComplete.value)
 
-// 处理登录回调逻辑
-const processLoginCallback = () => {
-  // 从 URL 参数中获取数据
-  const loginData = getUrlParam('data')
-
-  if (!loginData) {
-    console.error('未找到登录数据')
-    router.push('/')
+// 解析 URL 参数
+onMounted(() => {
+  const dataParam = route.query.data
+  if (!dataParam) {
+    errorMessage.value = '无效的访问链接'
+    loading.value = false
     return
   }
 
   try {
-    // Base64 解码数据
-    const decodedData = Base64.decode(loginData)
+    // Base64 解码
+    const decoded = JSON.parse(Base64.decode(dataParam))
+    decodedData.value = decoded
+    console.log('decodedData', decoded)
 
-    // 解析用户信息
-    const userInfo = JSON.parse(decodedData)?.user || null
+    loading.value = false
+
+    // 检查 errorCode
+    if (decoded.errorCode === 0) {
+      // 需要显示授权协议
+      showAgreement.value = true
+    } else if (decoded.errorCode === undefined && decoded.user) {
+      // 原有逻辑：登录成功，直接处理
+      processLoginSuccess(decoded)
+    } else {
+      errorMessage.value = decoded.message || '您没有访问权限'
+    }
+  } catch (e) {
+    errorMessage.value = '链接参数解析失败'
+    loading.value = false
+    console.error('解析 data 参数失败:', e)
+  }
+})
+
+// 处理登录成功（原有逻辑）
+const processLoginSuccess = (data) => {
+  try {
+    const userInfo = data.user || null
+    const userToken = data.token || null
 
     // 更新 Pinia store 状态
     const userStore = useUserStore()
     userStore.setUser(userInfo)
-    
-    console.log('Console - User state set:', userStore.user);
-
-    // 解析token信息
-    const userToken = JSON.parse(decodedData)?.token || null
 
     // 保存到 localStorage
-    if (typeof localStorage !== 'undefined') {
+    if (typeof localStorage !== 'undefined' && userToken) {
       localStorage.setItem('userToken', userToken)
     }
 
-    // 使用 setTimeout 确保状态完全更新后再跳转
+    // 跳转到用户页面
     setTimeout(() => {
-      console.log('Console - About to navigate, user state:', userStore.user);
       router.push(`/user/${userInfo.id}`)
     }, 200)
   } catch (error) {
@@ -63,8 +364,597 @@ const processLoginCallback = () => {
   }
 }
 
-// 在组件挂载时执行
-onMounted(() => {
-  processLoginCallback()
-})
+// 监听滚动计算阅读进度
+const handleScroll = () => {
+  if (!agreementContent.value) return
+
+  const { scrollTop, scrollHeight, clientHeight } = agreementContent.value
+  const scrollable = scrollHeight - clientHeight
+
+  if (scrollable <= 0) {
+    readProgress.value = 100
+  } else {
+    readProgress.value = Math.min(100, (scrollTop / scrollable) * 100)
+  }
+}
+
+// 处理同意变更
+const handleAgreeChange = () => {
+  // 可以在这里添加动画或提示
+}
+
+// 确认授权
+const handleConfirm = async () => {
+  if (!agreed.value || !readComplete.value) return
+
+  submitting.value = true
+
+  try {
+    // 调用数智底座用户组授权接口
+    // 使用 decodedData 中的 token 和 user_id
+    const token = decodedData.value?.data?.token
+    const userId = decodedData.value?.data?.user_id
+
+    // 使用绝对 URL 调用，绕过 Nuxt 路由，直接请求 nitro 代理
+    const response = await $fetch('/mceproduct/oidc/account-product/v3/user-groups/d5ab2fa4-256a-4066-926a-f95a047fb5d9/members', {
+      baseURL: '',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        // 使用 OIDC 返回的 token 进行认证
+        'token': `${token}`,
+      },
+      body: {
+        user_id: userId,
+      },
+    })
+
+    console.log('授权响应:', response)
+
+    // 授权成功后，先调用 OIDC 退出登录接口
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem('userInfo');
+      localStorage.removeItem('userToken')
+    }
+    window.location.href = "/bbsoidc/login/signout";
+
+    // 授权成功
+    authorized.value = true
+    showAgreement.value = false
+
+    // 延迟后跳转到 OIDC 登录页面
+    // setTimeout(() => {
+    //   window.location.href = '/bbsoidc/login/signin'
+    // }, 1000)
+  } catch (error) {
+    console.error('授权失败:', error)
+    // 可以使用 Element Plus 的消息提示
+    // ElMessage.error('授权失败，请稍后重试')
+  } finally {
+    submitting.value = false
+  }
+}
 </script>
+
+<style scoped>
+/* 页面基础 */
+.agreement-page {
+  max-height: calc(100vh - 52px);
+  background: linear-gradient(180deg, #fafafa 0%, #f5f5f5 100%);
+  position: relative;
+  overflow-x: hidden;
+  font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* 背景装饰 */
+.bg-decoration {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.gradient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+}
+
+.orb-1 {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%);
+  top: -200px;
+  right: -200px;
+}
+
+.orb-2 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.2) 0%, transparent 70%);
+  bottom: -100px;
+  left: -100px;
+}
+
+.grid-pattern {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* 内容包装器 */
+.content-wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 60px 24px;
+  max-height: calc(100vh - 52px);
+  display: flex;
+  flex-direction: column;
+}
+
+/* 头部 */
+.page-header {
+  margin-bottom: 48px;
+}
+
+.brand-mark {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: #6366f1;
+  text-transform: uppercase;
+}
+
+.header-line {
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(90deg, #6366f1, #ec4899);
+  margin-top: 12px;
+  border-radius: 2px;
+}
+
+/* 加载状态 */
+.loading-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid rgba(99, 102, 241, 0.2);
+  border-top-color: #6366f1;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loading-text {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* 错误状态 */
+.error-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.1);
+}
+
+.error-icon {
+  width: 80px;
+  height: 80px;
+  color: #ef4444;
+  margin-bottom: 24px;
+}
+
+.error-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 12px;
+}
+
+.error-desc {
+  font-size: 16px;
+  color: #6b7280;
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: #1f2937;
+  color: white;
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.back-link:hover {
+  background: #374151;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.3);
+}
+
+/* 协议容器 */
+.agreement-container {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.agreement-header {
+  padding: 40px 40px 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.section-label {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #6366f1;
+  padding: 6px 12px;
+  background: rgba(99, 102, 241, 0.1);
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+
+.agreement-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.agreement-subtitle {
+  font-size: 15px;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+/* 协议内容区域 */
+.agreement-content {
+  flex: 1;
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 0 40px;
+  scroll-behavior: smooth;
+}
+
+.agreement-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.agreement-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.agreement-content::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+}
+
+.agreement-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.content-inner {
+  padding: 32px 0;
+}
+
+.content-section {
+  margin-bottom: 28px;
+}
+
+.content-section:last-child {
+  margin-bottom: 0;
+}
+
+.content-section h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.content-section p {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #4b5563;
+  margin-bottom: 8px;
+  text-align: justify;
+}
+
+/* 阅读进度 */
+.reading-progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 40px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  background: rgba(250, 250, 250, 0.5);
+}
+
+.progress-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #6366f1, #ec4899);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  font-size: 12px;
+  font-weight: 500;
+  color: #6b7280;
+  white-space: nowrap;
+}
+
+/* 操作区域 */
+.action-area {
+  padding: 24px 40px 40px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* 复选框 */
+.agreement-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+  transition: opacity 0.3s ease;
+}
+
+.agreement-checkbox.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.agreement-checkbox input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.checkbox-custom {
+  width: 22px;
+  height: 22px;
+  border: 2px solid #d1d5db;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  margin-top: 1px;
+}
+
+.agreement-checkbox:not(.disabled):hover .checkbox-custom {
+  border-color: #6366f1;
+}
+
+.agreement-checkbox input:checked+.checkbox-custom {
+  background: #6366f1;
+  border-color: #6366f1;
+}
+
+.checkbox-custom svg {
+  width: 14px;
+  height: 14px;
+  color: white;
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: checkmark 0.3s ease forwards;
+}
+
+@keyframes checkmark {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.checkbox-label {
+  font-size: 14px;
+  color: #374151;
+  line-height: 1.6;
+}
+
+.wait-hint {
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+/* 确认按钮 */
+.confirm-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 16px 32px;
+  background: #e5e7eb;
+  color: #9ca3af;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: not-allowed;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.confirm-btn.active {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white;
+  cursor: pointer;
+}
+
+.confirm-btn.active:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px -10px rgba(99, 102, 241, 0.5);
+}
+
+.confirm-btn.active:active {
+  transform: translateY(0);
+}
+
+.confirm-btn.loading {
+  pointer-events: none;
+}
+
+.btn-text {
+  position: relative;
+  z-index: 1;
+}
+
+.btn-arrow {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+.confirm-btn.active:hover .btn-arrow {
+  transform: translateX(4px);
+}
+
+/* 加载动画 */
+.confirm-btn.loading::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.confirm-btn.loading .btn-text,
+.confirm-btn.loading .btn-arrow {
+  opacity: 0;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 成功状态 */
+.success-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.1);
+}
+
+.success-icon {
+  width: 80px;
+  height: 80px;
+  color: #10b981;
+  margin-bottom: 24px;
+  animation: scaleIn 0.5s ease;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.success-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 12px;
+}
+
+.success-desc {
+  font-size: 16px;
+  color: #6b7280;
+}
+
+/* 响应式 */
+@media (max-width: 640px) {
+  .content-wrapper {
+    padding: 24px 16px;
+  }
+
+  .agreement-header,
+  .agreement-content,
+  .reading-progress,
+  .action-area {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .agreement-title {
+    font-size: 24px;
+  }
+
+  .agreement-content {
+    max-height: 300px;
+  }
+}
+</style>
