@@ -51,6 +51,7 @@ export const useUserStore = defineStore("user", {
       // 清除 localStorage 中的用户信息
       if (typeof localStorage !== 'undefined') {
         localStorage.removeItem('userInfo');
+        localStorage.removeItem('userToken');
       }
        window.location.href = "/bbsoidc/login/signout";
     },
