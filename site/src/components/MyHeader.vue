@@ -4,7 +4,7 @@
       <div class="navbar-brand">
         <nuxt-link to="/" class="navbar-item">
           <img v-if="config.siteLogo" :alt="config.siteTitle" :src="config.siteLogo" />
-          <img v-else :alt="config.siteTitle" src="~/assets/images/logo.svg" />
+          <img v-else :alt="config.siteTitle" src="~/assets/images/logo.png" />
         </nuxt-link>
         <a :class="{ 'is-active': navbarActive }" class="navbar-burger burger" data-target="navbarBasic"
           @click="toggleNav">
