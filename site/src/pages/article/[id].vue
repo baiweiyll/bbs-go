@@ -98,15 +98,11 @@ const isPending = computed(() => {
 const handleContentLinkClick = useContentLinkClickHandler();
 const contentReady = ref(false)
 
-onMounted(() => {
+onMounted(async () => {
   mermaid.initialize({ startOnLoad: false })
-  nextTick(() => {
-    mermaid.run({ querySelector: '.language-mermaid' })
-  })
-
-  setTimeout(() => {
-    contentReady.value = true
-  }, 100)
+  contentReady.value = true
+  await nextTick()
+  await mermaid.run({ querySelector: '.language-mermaid' })
 })
 </script>
 

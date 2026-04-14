@@ -17,8 +17,17 @@
 </template>
 
 <script setup>
-import { MdEditor } from "md-editor-v3";
+import { MdEditor, config } from "md-editor-v3";
 import "md-editor-v3/lib/style.css";
+import mermaid from "mermaid";
+
+config({
+  editorExtensions: {
+    mermaid: {
+      instance: mermaid,
+    },
+  },
+});
 
 const language = computed(() => {
   const { locale } = useI18n();
@@ -63,7 +72,7 @@ const toolbars = ref([
   "link",
   "image",
   "table",
-  // "mermaid",
+  "mermaid",
   // "katex",
   "-",
   "revoke",
