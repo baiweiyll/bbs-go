@@ -44,55 +44,61 @@
             </div>
 
             <!-- 内容 -->
-            <div
-              class="topic-content content"
-              :class="{
-                'topic-tweet': topic.type === 1,
-              }"
-            >
-              <h1 v-if="topic.title" class="topic-title">
-                {{ topic.title }}
-              </h1>
+            <div class="topic-content-wrapper">
               <div
-                class="topic-content-detail line-numbers"
-                v-html="topic.content"
-                @click="handleContentLinkClick"
-              />
-              <ul
-                v-if="topic.imageList && topic.imageList.length"
-                class="topic-image-list"
+                v-show="contentReady"
+                class="topic-content content"
+                :class="{
+                  'topic-tweet': topic.type === 1,
+                }"
               >
-                <li v-for="(image, index) in topic.imageList" :key="index">
-                  <div class="image-item">
-                    <el-image
-                      :src="image.preview"
-                      :preview-src-list="imageUrls"
-                      :initial-index="index"
+                <h1 v-if="topic.title" class="topic-title">
+                  {{ topic.title }}
+                </h1>
+                <div
+                  class="topic-content-detail line-numbers"
+                  v-html="topic.content"
+                  @click="handleContentLinkClick"
+                />
+                <ul
+                  v-if="topic.imageList && topic.imageList.length"
+                  class="topic-image-list"
+                >
+                  <li v-for="(image, index) in topic.imageList" :key="index">
+                    <div class="image-item">
+                      <el-image
+                        :src="image.preview"
+                        :preview-src-list="imageUrls"
+                        :initial-index="index"
+                      />
+                    </div>
+                  </li>
+                </ul>
+                <div
+                  v-if="hideContent && hideContent.exists"
+                  class="topic-content-detail hide-content"
+                >
+                  <div v-if="hideContent.show" class="widget has-border">
+                    <div class="widget-header">
+                      <span>
+                        <i class="iconfont icon-lock" />
+                        <span>&nbsp;{{ t('pages.topic.detail.hideContent') }}</span>
+                      </span>
+                    </div>
+                    <div
+                      class="widget-content"
+                      v-html="hideContent.content"
+                      @click="handleContentLinkClick"
                     />
                   </div>
-                </li>
-              </ul>
-              <div
-                v-if="hideContent && hideContent.exists"
-                class="topic-content-detail hide-content"
-              >
-                <div v-if="hideContent.show" class="widget has-border">
-                  <div class="widget-header">
-                    <span>
-                      <i class="iconfont icon-lock" />
-                      <span>&nbsp;{{ t('pages.topic.detail.hideContent') }}</span>
-                    </span>
+                  <div v-else class="hide-content-tip">
+                    <i class="iconfont icon-lock" />
+                    <span>{{ t('pages.topic.detail.hideContentTip') }}</span>
                   </div>
-                  <div
-                    class="widget-content"
-                    v-html="hideContent.content"
-                    @click="handleContentLinkClick"
-                  />
                 </div>
-                <div v-else class="hide-content-tip">
-                  <i class="iconfont icon-lock" />
-                  <span>{{ t('pages.topic.detail.hideContentTip') }}</span>
-                </div>
+              </div>
+              <div v-show="!contentReady" class="topic-content-loading">
+                <span>内容加载中...</span>
               </div>
             </div>
 
@@ -184,6 +190,7 @@
 
 <script setup>
 import { useI18n } from 'vue-i18n';
+import mermaid from 'mermaid'
 
 const route = useRoute();
 const { t } = useI18n();
@@ -225,6 +232,7 @@ const isPending = computed(() => {
 });
 
 const handleContentLinkClick = useContentLinkClickHandler();
+const contentReady = ref(false)
 
 async function like() {
   try {
@@ -292,6 +300,17 @@ async function addFavorite(topicId) {
 async function commentCreated() {
   refreshHideContent();
 }
+
+onMounted(() => {
+  mermaid.initialize({ startOnLoad: false })
+  nextTick(() => {
+    mermaid.run({ querySelector: '.language-mermaid' })
+  })
+
+  setTimeout(() => {
+    contentReady.value = true
+  }, 100)
+})
 </script>
 
 <style lang="scss" scoped>
@@ -359,13 +378,17 @@ async function commentCreated() {
     }
   }
 
-  .topic-content {
-    font-size: 15px;
-    color: var(--text-color);
-    white-space: normal;
-    word-break: break-all;
-    word-wrap: break-word;
-    padding-top: 0 !important;
+  .topic-content-wrapper {
+    position: relative;
+    min-height: 120px;
+
+    .topic-content {
+      font-size: 15px;
+      color: var(--text-color);
+      white-space: normal;
+      word-break: break-all;
+      word-wrap: break-word;
+      padding-top: 0 !important;
 
     .topic-title {
       font-weight: 700;
@@ -411,7 +434,6 @@ async function commentCreated() {
         .image-item {
           display: block;
           overflow: hidden;
-          // transform-style: preserve-3d;
 
           & > img {
             width: 100%;
@@ -482,6 +504,19 @@ async function commentCreated() {
         font-size: 14px;
         color: #3273dc;
       }
+    }
+    }
+
+    .topic-content-loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-color2);
+      border-radius: var(--border-radius);
+      font-size: 14px;
+      color: var(--text-color3);
     }
   }
 

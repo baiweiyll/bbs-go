@@ -31,11 +31,17 @@
             </div>
           </div>
 
-          <div
-            class="article-content content line-numbers"
-            v-html="article.content"
-            @click="handleContentLinkClick"
-          ></div>
+          <div class="article-content-wrapper">
+            <div
+              v-show="contentReady"
+              class="article-content content line-numbers"
+              v-html="article.content"
+              @click="handleContentLinkClick"
+            ></div>
+            <div v-show="!contentReady" class="article-content-loading">
+              <span>内容加载中...</span>
+            </div>
+          </div>
 
           <!--节点、标签-->
           <div class="article-tags">
@@ -64,11 +70,15 @@
 </template>
 
 <script setup>
+import mermaid from 'mermaid'
+
 const { t } = useI18n();
 const route = useRoute();
 const { data: article, error } = await useMyFetch(
   `/bbsapi/article/${route.params.id}`
 );
+
+console.log('article', article.value)
 
 if (error.value) {
   throw createError({
@@ -86,6 +96,18 @@ const isPending = computed(() => {
 });
 
 const handleContentLinkClick = useContentLinkClickHandler();
+const contentReady = ref(false)
+
+onMounted(() => {
+  mermaid.initialize({ startOnLoad: false })
+  nextTick(() => {
+    mermaid.run({ querySelector: '.language-mermaid' })
+  })
+
+  setTimeout(() => {
+    contentReady.value = true
+  }, 100)
+})
 </script>
 
 <style lang="scss" scoped>
@@ -148,13 +170,30 @@ const handleContentLinkClick = useContentLinkClickHandler();
     }
   }
 
-  .article-content {
-    font-size: 15px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+  .article-content-wrapper {
+    position: relative;
+    min-height: 120px;
 
-    a.article-share-summary {
-      color: var(--text-color);
+    .article-content {
+      font-size: 15px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+
+      a.article-share-summary {
+        color: var(--text-color);
+      }
+    }
+
+    .article-content-loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-color2);
+      border-radius: var(--border-radius);
+      font-size: 14px;
+      color: var(--text-color3);
     }
   }
 
