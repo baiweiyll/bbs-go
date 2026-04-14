@@ -67,7 +67,7 @@ export default defineNuxtConfig({
   app: {
     baseURL: '/forum/',
     head: {
-      title: 'BBS-GO',
+      title: '数智底座 - 技术社区',
       htmlAttrs: { class: 'theme-light has-navbar-fixed-top' },
       script: [
         {
