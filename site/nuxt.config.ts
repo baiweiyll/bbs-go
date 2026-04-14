@@ -6,13 +6,13 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   srcDir: 'src/',
   ssr: ssr,
-  
+
   runtimeConfig: {
     public: {
       serverURL: serverURL,
     },
   },
-  
+
   modules: [
     '@pinia/nuxt',
     '@vueuse/nuxt',
@@ -83,6 +83,21 @@ export default defineNuxtConfig({
     '~/assets/css/index.scss',
   ],
 
+  build: {
+    transpile: [],
+  },
+
+  vite: {
+    optimizeDeps: {
+      include: ['katex'],
+    },
+    resolve: {
+      alias: {
+        katex: 'katex/dist/katex.min.js',
+      },
+    },
+  },
+
   nitro: {
     routeRules: {
       // OIDC 登录接口代理，配置不跟随302重定向
@@ -130,4 +145,6 @@ export default defineNuxtConfig({
     detectBrowserLanguage: false,
     lazy: false,
   },
+
+  compatibilityDate: '2026-04-14',
 })
