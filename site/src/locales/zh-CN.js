@@ -506,6 +506,10 @@ export default {
       },
     },
     article: {
+      detail: {
+        pending: "文章审核中",
+        publishedAt: "发布于",
+      },
       create: {
         needEmailTitle: "请先验证邮箱",
         needEmailBody: "发表文章前，请先设置并验证邮箱。",
