@@ -9,4 +9,6 @@ node_modules
 .env.development
 .qoder
 .specify
+.claude
+.spec-workflow
 agent.md
