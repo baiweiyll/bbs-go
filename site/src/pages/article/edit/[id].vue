@@ -90,14 +90,14 @@ async function submitCreate() {
       })
     );
     useMsg({
-      message: $t("pages.article.edit.editSuccess"),
+      message: t("pages.article.edit.editSuccess"),
       onClose() {
         useLinkTo(`/article/${postForm.value.id}`);
       },
     });
   } catch (e) {
     publishing.value = false;
-    useMsgError($t("pages.article.edit.editFailed") + (e.message || e));
+    useMsgError(t("pages.article.edit.editFailed") + (e.message || e));
   }
 }
 </script>
