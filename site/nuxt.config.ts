@@ -43,6 +43,7 @@ export default defineNuxtConfig({
   ],
 
   plugins: [
+    '~/plugins/baidu-analytics.client',
   ],
 
   elementPlus: {
@@ -70,11 +71,6 @@ export default defineNuxtConfig({
       title: '数智底座 - 技术社区',
       htmlAttrs: { class: 'theme-light has-navbar-fixed-top' },
       script: [
-        {
-          src: 'https://hm.baidu.com/hm.js?79b8ff82974d0769ef5c629e4cd46629',
-          type: 'text/javascript',
-          async: true
-        }
       ]
     },
   },

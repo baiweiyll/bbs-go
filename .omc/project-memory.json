@@ -1,0 +1,139 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1781231631462,
+  "projectRoot": "f:\\frontend\\AI\\bbs-go-now",
+  "techStack": {
+    "languages": [
+      {
+        "name": "C/C++",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "Makefile"
+        ]
+      }
+    ],
+    "frameworks": [],
+    "packageManager": null,
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": "make build",
+    "testCommand": "make test",
+    "lintCommand": null,
+    "devCommand": null,
+    "scripts": {}
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "docs"
+    ],
+    "gitBranches": {
+      "defaultBranch": "master",
+      "branchingStrategy": null
+    }
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "admin": {
+      "path": "admin",
+      "purpose": null,
+      "fileCount": 16,
+      "lastAccessed": 1781231631174,
+      "keyFiles": [
+        "babel.config.js",
+        "commitlint.config.js",
+        "components.d.ts",
+        "index.html",
+        "package.json"
+      ]
+    },
+    "docs": {
+      "path": "docs",
+      "purpose": "Documentation",
+      "fileCount": 0,
+      "lastAccessed": 1781231631176,
+      "keyFiles": []
+    },
+    "server": {
+      "path": "server",
+      "purpose": null,
+      "fileCount": 11,
+      "lastAccessed": 1781231631177,
+      "keyFiles": [
+        "bbs-go",
+        "bbs-go.example.yaml",
+        "bbs-go.yaml",
+        "go.mod",
+        "go.sum"
+      ]
+    },
+    "site": {
+      "path": "site",
+      "purpose": null,
+      "fileCount": 11,
+      "lastAccessed": 1781231631178,
+      "keyFiles": [
+        "ecosystem.config.js",
+        "nuxt.config.ts",
+        "package.json",
+        "pnpm-workspace.yaml",
+        "README.md"
+      ]
+    },
+    "site\\node_modules": {
+      "path": "site\\node_modules",
+      "purpose": "Dependencies",
+      "fileCount": 2,
+      "lastAccessed": 1781231631202,
+      "keyFiles": []
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "site\\nuxt.config.ts",
+      "accessCount": 4,
+      "lastAccessed": 1781231759313,
+      "type": "file"
+    },
+    {
+      "path": "site\\src\\plugins\\baidu-analytics.client.ts",
+      "accessCount": 2,
+      "lastAccessed": 1781231759613,
+      "type": "file"
+    },
+    {
+      "path": "site",
+      "accessCount": 2,
+      "lastAccessed": 1781231924038,
+      "type": "directory"
+    },
+    {
+      "path": "site\\.env.production",
+      "accessCount": 1,
+      "lastAccessed": 1781231921190,
+      "type": "file"
+    },
+    {
+      "path": "site\\.env.local",
+      "accessCount": 1,
+      "lastAccessed": 1781231921501,
+      "type": "file"
+    },
+    {
+      "path": "site\\package.json",
+      "accessCount": 1,
+      "lastAccessed": 1781231929209,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}
